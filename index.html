@@ -2,478 +2,394 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TrackBack - Student Lost &amp; Found Platform</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TrackBack - Student Lost &amp; Found Platform</title>
 
-    <link rel="icon" href="img/logo/favicon-circle.png" type="image/png" />
+  <link rel="icon" href="img/logo/favicon-circle.png" type="image/png" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
-        rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
 
-    <link rel="stylesheet" href="./index.css" />
+  <link rel="stylesheet" href="./index.css" />
 </head>
 
 <body>
-    <header class="topbar">
-        <div class="container topbar__inner">
-            <div class="topbar__left">
-                <span class="topbar__item">📍 Kuratoli, Khilkhet, Dhaka</span>
-                <span class="dot">•</span>
-                <span class="topbar__item">📧 admin@trackback.com</span>
-                <span class="dot">•</span>
-                <span class="topbar__item">📞 (880) 933-3274</span>
-            </div>
 
-            <div class="topbar__right">
-                <a class="iconlink" href="#" aria-label="Facebook" target="_blank">
-                    <i class="fa-brands fa-facebook-f"></i>
-                </a>
+  <!-- Header -->
+  <div id="header-placeholder"></div>
+  <script>
+    fetch("header.html")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("header-placeholder").innerHTML = data;
+      });
+  </script>
 
-                <a class="iconlink" href="#" aria-label="X (Twitter)" target="_blank">
-                    <i class="fa-brands fa-x-twitter"></i>
-                </a>
+  <main>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container hero__grid">
+        <div class="hero__left">
+          <h1 class="hero__title">
+            TrackBack<span class="accent"> <br> Lost &amp; Found Platform</span>
+          </h1>
 
-                <a class="iconlink" href="#" aria-label="Instagram" target="_blank">
-                    <i class="fa-brands fa-instagram"></i>
-                </a>
+          <p class="hero__desc">
+            TrackBack simplifies student life by offering a dedicated and easy-to-use platform where
+            students can report lost items and browse found belongings in one organized place. It removes
+            the hassle of searching across multiple groups or notice boards, making the recovery process
+            faster and more efficient.
+          </p>
 
-                <a class="iconlink" href="#" aria-label="LinkedIn" target="_blank">
-                    <i class="fa-brands fa-linkedin-in"></i>
-                </a>
+          <p class="hero__desc">
+            Built for campus communities, TrackBack encourages trust, cooperation, and responsibility among
+            students. By connecting people directly and securely, it helps reunite lost items with their
+            rightful owners while strengthening a culture of support and care within student life.
+          </p>
 
-                <a class="iconlink" href="#" aria-label="YouTube" target="_blank">
-                    <i class="fa-brands fa-youtube"></i>
-                </a>
+          <div class="hero__cta">
+            <a class="btn btn--green btn--pill" href="#">Learn More</a>
+            <a class="btn btn--outline-green btn--pill" href="#">Lost &amp; Found Area</a>
+          </div>
 
-            </div>
-        </div>
-    </header>
-
-    <nav class="nav">
-        <div class="container nav__inner">
-            <a class="brand" href="#">
-                <img class="brand__img" src="img/logo/logo-2.png" alt="TrackBack Logo" />
-            </a>
-
-            <div class="nav__links">
-                <a href="#features" class="nav__link">lost & Found</a>
-                <a href="#support" class="nav__link">Knowledgebase</a>
-                <a href="#support" class="nav__link">Blog</a>
-                <a href="#contact" class="nav__link">Contact</a>
-            </div>
-
-            <div class="nav__actions">
-                <a class="btn btn--blue" href="login.html">Login</a>
-                <a class="btn btn--green" href="registration.html">Sign Up</a>
-            </div>
-        </div>
-    </nav>
-
-    <main>
-        <section class="hero">
-            <div class="container hero__grid">
-                <div class="hero__left">
-                    <h1 class="hero__title">
-                        TrackBack<span class="accent"> <br> Lost &amp; Found Platform</span>
-                    </h1>
-
-                    <p class="hero__desc">
-                        TrackBack simplifies student life by offering a dedicated and easy-to-use platform where
-                        students can report lost
-                        items and browse found belongings in one organized place. It removes the hassle of searching
-                        across multiple groups
-                        or notice boards, making the recovery process faster and more efficient.
-                    </p>
-
-                    <p class="hero__desc">
-                        Built for campus communities, TrackBack encourages trust, cooperation, and responsibility among
-                        students. By
-                        connecting people directly and securely, it helps reunite lost items with their rightful owners
-                        while strengthening
-                        a culture of support and care within student life.
-                    </p>
-
-
-                    <div class="hero__cta">
-                        <a class="btn btn--green btn--pill" href="#">Learn More</a>
-                        <a class="btn btn--outline-green btn--pill" href="#">Lost &amp; Found Area</a>
-                    </div>
-
-                    <div class="uni-row">
-                        <button class="pill pill--green">I’m a Student of AIUB</button>
-                        <button class="pill pill--blue">I’m a Student of NSU</button>
-                        <button class="pill pill--green">I’m a Student of DU</button>
-                        <button class="pill pill--blue">I’m a Student of BRAC</button>
-                    </div>
-                </div>
-
-                <div class="hero__right">
-                    <div class="hero-cards">
-                        <article class="media-card media-card--tall">
-                            <img src="./img/other/hero-1.jpg" alt="TrackBack demo" />
-                        </article>
-
-                        <div class="hero-cards__stack">
-                            <article class="media-card">
-                                <img src="./img/other/hero-2.png" alt="Found items list" />
-                            </article>
-
-                            <article class="media-card">
-                                <img src="./img/other/hero-3.png" alt="Campus support" />
-                            </article>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="container stats">
-                <div class="stat">
-                    <div class="stat__label">Posts</div>
-                    <div class="stat__value">10+</div>
-                </div>
-                <div class="stat">
-                    <div class="stat__label">Recovered</div>
-                    <div class="stat__value">5+</div>
-                </div>
-                <div class="stat">
-                    <div class="stat__label">Universities</div>
-                    <div class="stat__value">4</div>
-                </div>
-                <div class="stat">
-                    <div class="stat__label">Members</div>
-                    <div class="stat__value">50+</div>
-                </div>
-            </div>
-        </section>
-
-        <section class="band band--blue" id="features">
-            <div class="container band__grid">
-                <div>
-                    <h2 class="band__title">Making student life better &amp; easier</h2>
-                    <p class="band__text">
-                        TrackBack is a student-focused platform designed to make campus life easier and more organized.
-                        It helps
-                        students report lost items, post found belongings, and connect through a simple and secure
-                        system.
-                    </p>
-                    <div class="band__cta">
-                        <a class="btn btn--white btn--pill" href="#">About Us</a>
-                        <a class="btn btn--outline-white btn--pill" href="#">Check Latest Updates</a>
-                    </div>
-                </div>
-
-                <div class="band__mini">
-                    <div class="mini-card">
-                        <div class="mini-card__title">Need Help?</div>
-                        <div class="mini-card__text">Sign in to your account or create a new one to get started.</div>
-                        <a class="btn btn--white btn--pill mini-card__btn" href="#">Sign in</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="newsletter-strip">
-            <div class="container newsletter-strip__inner">
-                <div class="newsletter-strip__text">
-                    <h3>Subscribe to our Newsletter</h3>
-                    <p>Get latest updates directly into your email</p>
-                </div>
-
-                <form class="newsletter-strip__form" action="#" method="post">
-                    <input type="email" placeholder="Enter your Email" required />
-                    <button class="btn btn--green" type="submit">Subscribe</button>
-                </form>
-            </div>
-        </section>
-
-        <section class="section" id="support">
-            <div class="container">
-                <h2 class="section__title">How can we help you?</h2>
-
-                <div class="help-grid">
-                    <a class="help-item" href="#"><span class="help-ico">👤</span><span>Sign in to your
-                            Account</span></a>
-                    <a class="help-item" href="#"><span class="help-ico">💳</span><span>Help us by donating</span></a>
-                    <a class="help-item" href="#"><span class="help-ico">📦</span><span>Lost &amp; Found Area</span></a>
-                    <a class="help-item" href="#"><span class="help-ico">📅</span><span>Schedule a meeting with
-                            us</span></a>
-                    <a class="help-item" href="#"><span class="help-ico">🔎</span><span>Search for a user</span></a>
-                    <a class="help-item" href="#"><span class="help-ico">❓</span><span>Q&amp;A Knowledgebase</span></a>
-                    <a class="help-item" href="#"><span class="help-ico">ℹ️</span><span>Learn more about us</span></a>
-                    <a class="help-item" href="#"><span class="help-ico">📝</span><span>Create an account</span></a>
-                </div>
-            </div>
-        </section>
-
-        <section class="section section--muted">
-            <div class="container">
-                <h2 class="section__title">Become our Partner</h2>
-
-                <div class="sponsor-grid">
-                    <article class="sponsor-card">
-                        <div class="sponsor-card__logo">SiteChai</div>
-                        <p>SiteChai is our hosting partner, providing fast, reliable, and affordable web hosting and
-                            domain solutions tailored for Bangladesh.</p>
-                        <a class="btn btn--outline-green btn--pill" href="#">View Website</a>
-                    </article>
-
-                    <article class="sponsor-card">
-                        <div class="sponsor-card__logo">Jogdan</div>
-                        <p>JOGDAN is our humanitarian partner, providing essential support in poverty relief, education,
-                            healthcare and disaster response across Bangladesh.</p>
-                        <a class="btn btn--outline-green btn--pill" href="#">View Website</a>
-                    </article>
-
-                    <article class="sponsor-card">
-                        <div class="sponsor-card__logo">Hostnexa LLC</div>
-                        <p>Hostnexa LLC is our domain partner, delivering reliable global domain registration,
-                            management, and digital infrastructure solutions.</p>
-                        <a class="btn btn--outline-green btn--pill" href="#">View Website</a>
-                    </article>
-
-                    <article class="sponsor-card">
-                        <div class="sponsor-card__logo">Unbam</div>
-                        <p>Unbam is our digital platform partner, powering seamless online experiences and modern
-                            digital solutions.</p>
-                        <a class="btn btn--outline-green btn--pill" href="#">View Website</a>
-                    </article>
-
-                    <article class="sponsor-card">
-                        <div class="sponsor-card__logo">ToolRules</div>
-                        <p>ToolRules is our license partner, providing secure, reliable, and compliant licensing
-                            solutions.</p>
-                        <a class="btn btn--outline-green btn--pill" href="#">View Website</a>
-                    </article>
-
-                    <article class="sponsor-card sponsor-card--cta">
-                        <h3>Become our partner</h3>
-                        <p>Support students and community impact through TrackBack.</p>
-                        <a class="btn btn--green btn--pill" href="#">Learn More</a>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-        <section class="section">
-            <div class="container">
-                <h2 class="section__title">Few Frequently Asked Questions</h2>
-                <p class="section__sub">
-                    Below is ready-to-use FAQ content, written to match TrackBack’s student-focused tone.
-
-                <div class="accordion">
-                    <details open>
-                        <summary>What is TrackBack?</summary>
-                        <div class="accordion__body">TrackBack is a student-focused lost and found
-                            platform designed to help students report lost items, post found belongings,
-                            and reconnect with their rightful owners in a secure and organized way. It brings
-                            all lost and found activities into one trusted space for campus communities.
-                        </div>
-                    </details>
-
-                    <details>
-                        <summary>What problem does TrackBack solve?</summary>
-                        <div class="accordion__body">TrackBack removes the hassle of searching through multiple
-                            Facebook groups, notice boards, or chat messages. Instead of scattered posts, students
-                            can easily find and report items in one centralized platform, saving time and reducing
-                            stress.
-                        </div>
-                    </details>
-
-                    <details>
-                        <summary>What are the main features of TrackBack?</summary>
-                        <div class="accordion__body">TrackBack offers lost item reporting, found item posting, secure
-                            student-to-student communication, campus-based listings, and an organized dashboard to track
-                            updates. The platform is designed to be simple, fast, and easy to use for everyone.</div>
-                    </details>
-
-                    <details>
-                        <summary>Is TrackBack free to use?</summary>
-                        <div class="accordion__body">Yes. TrackBack is completely free for students. Our goal is
-                            to support campus life and help students without creating any financial barriers.
-                        </div>
-                    </details>
-                </div>
-            </div>
-        </section>
-
-        <section class="section section--muted">
-            <div class="container programs">
-                <div class="programs__left">
-                    <h2 class="section__title">Our Other Programs</h2>
-                    <p class="section__sub">
-                        Explore initiatives like Zero Pollution Program and Student Development Program and help create
-                        positive impact.
-                    </p>
-
-                    <div class="programs__cta">
-                        <a class="btn btn--green btn--pill" href="#">View all our programs</a>
-                        <a class="btn btn--outline-green btn--pill" href="#">Become a volunteer</a>
-                    </div>
-                </div>
-
-                <div class="programs__right">
-                    <div class="logo-bubble logo-bubble--img">
-                        <img src="img/logo/trackback-zero-pollution-circle.png"
-                            alt="TrackBack Zero Pollution Program" />
-                    </div>
-
-                    <div class="logo-bubble logo-bubble--img">
-                        <img src="img/logo/trackback-student-development-circle.png"
-                            alt="TrackBack Student Development Program" />
-                    </div>
-
-                    <div class="logo-bubble logo-bubble--main">
-                        <img src="img/logo/logo-2.png" alt="TrackBack" />
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <section class="section" id="blog">
-            <div class="container">
-                <h2 class="section__title">Latest Updates from our Blog!</h2>
-
-                <div class="blog-grid">
-                    <article class="blog-card">
-                        <img src="./img/other/blog-1.png" alt="Blog post" />
-                        <div class="blog-card__body">
-                            <h3>How TrackBack Makes Campus Life Easier</h3>
-                            <p>Discover how a centralized lost and found platform saves students time and stress</p>
-                            <a class="btn btn--outline-green btn--pill" href="#">Read More</a>
-                        </div>
-                    </article>
-
-                    <article class="blog-card">
-                        <img src="./img/other/blog-2.png" alt="Blog post" />
-                        <div class="blog-card__body">
-                            <h3>Top 5 Most Commonly Lost Items on Campus</h3>
-                            <p>From ID cards to smartphones, some items go missing more than others.</p>
-                            <a class="btn btn--outline-green btn--pill" href="#">Read More</a>
-                        </div>
-                    </article>
-
-                    <article class="blog-card">
-                        <img src="./img/other/blog-3.png" alt="Blog post" />
-                        <div class="blog-card__body">
-                            <h3>How TrackBack Helps Students Help Each Other</h3>
-                            <p>TrackBack is more than a platform—it’s a student community.</p>
-                            <a class="btn btn--outline-green btn--pill" href="#">Read More</a>
-                        </div>
-                    </article>
-                </div>
-
-                <div class="center">
-                    <a class="btn btn--green btn--pill" href="#">Learn More on our blog!</a>
-                </div>
-            </div>
-        </section>
-
-        <section class="newsletter-strip">
-            <div class="container newsletter-strip__inner">
-                <div class="newsletter-strip__text">
-                    <h3>Subscribe to our Newsletter</h3>
-                    <p>Get latest updates directly into your email</p>
-                </div>
-
-                <form class="newsletter-strip__form" action="#" method="post">
-                    <input type="email" placeholder="Enter your Email" required />
-                    <button class="btn btn--green" type="submit">Subscribe</button>
-                </form>
-            </div>
-        </section>
-    </main>
-
-    <footer class="footer" id="contact">
-        <div class="container footer__grid">
-            <div class="footer__brand">
-                <div class="brand brand--footer">
-                    <img class="brand__img brand__img--footer" src="img/logo/logo-2.png" alt="TrackBack Logo" />
-                </div>
-
-                <p>
-                    TrackBack is a unified platform where students from different universities can report misplaced
-                    items, browse
-                    all found belongings, and reconnect lost items with rightful owners.
-                </p>
-            </div>
-
-            <div class="footer__col">
-                <h4>Features</h4>
-                <a href="#">Lost &amp; Found</a>
-                <a href="#">Latest Updates</a>
-                <a href="#">Blog</a>
-            </div>
-
-            <div class="footer__col">
-                <h4>Support</h4>
-                <a href="#">Contact</a>
-                <a href="#">Terms &amp; Conditions</a>
-                <a href="#">Privacy Policy</a>
-            </div>
-
-            <div class="footer__col">
-                <h4>Contact</h4>
-                <div class="footer__meta">408/1 (Old KA 66/1), Kuratoli, Khilkhet, Dhaka 1229</div>
-                <div class="footer__meta">Tel: (880) 933-3274</div>
-                <div class="footer__meta">admin@trackback.com</div>
-            </div>
+          <div class="uni-row">
+            <button class="pill pill--green">I’m a Student of AIUB</button>
+            <button class="pill pill--blue">I’m a Student of NSU</button>
+            <button class="pill pill--green">I’m a Student of DU</button>
+            <button class="pill pill--blue">I’m a Student of BRAC</button>
+          </div>
         </div>
 
-        <div class="footer__bottom">
-            <div class="container footer__bottom-inner">
-                <span>Copyright © 2026 TrackBack. All rights reserved.</span>
-                <div class="topbar__right">
-                    <a class="iconlink" href="#" aria-label="Facebook" target="_blank">
-                        <i class="fa-brands fa-facebook-f"></i>
-                    </a>
+        <div class="hero__right">
+          <div class="hero-cards">
+            <article class="media-card media-card--tall">
+              <img src="./img/other/hero-1.jpg" alt="TrackBack demo" />
+            </article>
 
-                    <a class="iconlink" href="#" aria-label="X (Twitter)" target="_blank">
-                        <i class="fa-brands fa-x-twitter"></i>
-                    </a>
+            <div class="hero-cards__stack">
+              <article class="media-card">
+                <img src="./img/other/hero-2.png" alt="Found items list" />
+              </article>
 
-                    <a class="iconlink" href="#" aria-label="Instagram" target="_blank">
-                        <i class="fa-brands fa-instagram"></i>
-                    </a>
-
-                    <a class="iconlink" href="#" aria-label="LinkedIn" target="_blank">
-                        <i class="fa-brands fa-linkedin-in"></i>
-                    </a>
-
-                    <a class="iconlink" href="#" aria-label="YouTube" target="_blank">
-                        <i class="fa-brands fa-youtube"></i>
-                    </a>
-
-                </div>
+              <article class="media-card">
+                <img src="./img/other/hero-3.png" alt="Campus support" />
+              </article>
             </div>
+          </div>
         </div>
-    </footer>
+      </div>
 
-    <a class="float-chat" id="backToTop" href="javascript:void(0)" aria-label="Back to top">
-        <span class="float-chat__ico">⬆</span>
-    </a>
+      <div class="container stats">
+        <div class="stat">
+          <div class="stat__label">Posts</div>
+          <div class="stat__value">10+</div>
+        </div>
+        <div class="stat">
+          <div class="stat__label">Recovered</div>
+          <div class="stat__value">5+</div>
+        </div>
+        <div class="stat">
+          <div class="stat__label">Universities</div>
+          <div class="stat__value">4</div>
+        </div>
+        <div class="stat">
+          <div class="stat__label">Members</div>
+          <div class="stat__value">50+</div>
+        </div>
+      </div>
+    </section>
 
-    <script>
-        const backToTop = document.getElementById("backToTop");
+    <!-- About us block -->
+    <section class="band band--blue" id="features">
+      <div class="container band__grid">
+        <div>
+          <h2 class="band__title">Making student life better &amp; easier</h2>
+          <p class="band__text">
+            TrackBack is a student-focused platform designed to make campus life easier and more organized.
+            It helps students report lost items, post found belongings, and connect through a simple and
+            secure system.
+          </p>
+          <div class="band__cta">
+            <a class="btn btn--white btn--pill" href="#">About Us</a>
+            <a class="btn btn--outline-white btn--pill" href="#">Check Latest Updates</a>
+          </div>
+        </div>
 
-        function toggleBackToTop() {
-            if (window.scrollY > 300) backToTop.classList.add("show");
-            else backToTop.classList.remove("show");
-        }
+        <div class="band__mini">
+          <div class="mini-card">
+            <div class="mini-card__title">Need Help?</div>
+            <div class="mini-card__text">
+              Sign in to your account or create a new one to get started.
+            </div>
+            <a class="btn btn--white btn--pill mini-card__btn" href="#">Sign in</a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        window.addEventListener("scroll", toggleBackToTop);
-        toggleBackToTop();
+    <!-- Newsletter  -->
+    <section class="newsletter-strip">
+      <div class="container newsletter-strip__inner">
+        <div class="newsletter-strip__text">
+          <h3>Subscribe to our Newsletter</h3>
+          <p>Get latest updates directly into your email</p>
+        </div>
 
-        backToTop.addEventListener("click", () => {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        });
-    </script>
+        <form class="newsletter-strip__form" action="#" method="post">
+          <input type="email" placeholder="Enter your Email" required />
+          <button class="btn btn--green" type="submit">Subscribe</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Quick nav Section -->
+    <section class="section" id="support">
+      <div class="container">
+        <h2 class="section__title">How can we help you?</h2>
+
+        <div class="help-grid">
+          <a class="help-item" href="#"><span class="help-ico">👤</span><span>Sign in to your Account</span></a>
+          <a class="help-item" href="#"><span class="help-ico">💳</span><span>Help us by donating</span></a>
+          <a class="help-item" href="#"><span class="help-ico">📦</span><span>Lost &amp; Found Area</span></a>
+          <a class="help-item" href="#"><span class="help-ico">📅</span><span>Schedule a meeting with us</span></a>
+          <a class="help-item" href="#"><span class="help-ico">🔎</span><span>Search for a user</span></a>
+          <a class="help-item" href="#"><span class="help-ico">❓</span><span>Q&amp;A Knowledgebase</span></a>
+          <a class="help-item" href="#"><span class="help-ico">ℹ️</span><span>Learn more about us</span></a>
+          <a class="help-item" href="#"><span class="help-ico">📝</span><span>Create an account</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Partners -->
+    <section class="section section--muted">
+      <div class="container">
+        <h2 class="section__title">Become our Partner</h2>
+
+        <div class="sponsor-grid">
+          <article class="sponsor-card">
+            <div class="sponsor-card__logo">SiteChai</div>
+            <p>
+              SiteChai is our hosting partner, providing fast, reliable, and affordable web hosting and
+              domain solutions tailored for Bangladesh.
+            </p>
+            <a class="btn btn--outline-green btn--pill" href="#">View Website</a>
+          </article>
+
+          <article class="sponsor-card">
+            <div class="sponsor-card__logo">Jogdan</div>
+            <p>
+              JOGDAN is our humanitarian partner, providing essential support in poverty relief, education,
+              healthcare and disaster response across Bangladesh.
+            </p>
+            <a class="btn btn--outline-green btn--pill" href="#">View Website</a>
+          </article>
+
+          <article class="sponsor-card">
+            <div class="sponsor-card__logo">Hostnexa LLC</div>
+            <p>
+              Hostnexa LLC is our domain partner, delivering reliable global domain registration,
+              management, and digital infrastructure solutions.
+            </p>
+            <a class="btn btn--outline-green btn--pill" href="#">View Website</a>
+          </article>
+
+          <article class="sponsor-card">
+            <div class="sponsor-card__logo">Unbam</div>
+            <p>
+              Unbam is our digital platform partner, powering seamless online experiences and modern
+              digital solutions.
+            </p>
+            <a class="btn btn--outline-green btn--pill" href="#">View Website</a>
+          </article>
+
+          <article class="sponsor-card">
+            <div class="sponsor-card__logo">ToolRules</div>
+            <p>
+              ToolRules is our license partner, providing secure, reliable, and compliant licensing
+              solutions.
+            </p>
+            <a class="btn btn--outline-green btn--pill" href="#">View Website</a>
+          </article>
+
+          <article class="sponsor-card sponsor-card--cta">
+            <h3>Become our partner</h3>
+            <p>Support students and community impact through TrackBack.</p>
+            <a class="btn btn--green btn--pill" href="#">Learn More</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section">
+      <div class="container">
+        <h2 class="section__title">Few Frequently Asked Questions</h2>
+        <p class="section__sub">
+          Below is ready-to-use FAQ content, written to match TrackBack’s student-focused tone.
+        </p>
+
+        <div class="accordion">
+          <details open>
+            <summary>What is TrackBack?</summary>
+            <div class="accordion__body">
+              TrackBack is a student-focused lost and found platform designed to help students report
+              lost items, post found belongings, and reconnect with their rightful owners in a secure and
+              organized way. It brings all lost and found activities into one trusted space for campus
+              communities.
+            </div>
+          </details>
+
+          <details>
+            <summary>What problem does TrackBack solve?</summary>
+            <div class="accordion__body">
+              TrackBack removes the hassle of searching through multiple Facebook groups, notice boards,
+              or chat messages. Instead of scattered posts, students can easily find and report items in
+              one centralized platform, saving time and reducing stress.
+            </div>
+          </details>
+
+          <details>
+            <summary>What are the main features of TrackBack?</summary>
+            <div class="accordion__body">
+              TrackBack offers lost item reporting, found item posting, secure student-to-student
+              communication, campus-based listings, and an organized dashboard to track updates. The
+              platform is designed to be simple, fast, and easy to use for everyone.
+            </div>
+          </details>
+
+          <details>
+            <summary>Is TrackBack free to use?</summary>
+            <div class="accordion__body">
+              Yes. TrackBack is completely free for students. Our goal is to support campus life and help
+              students without creating any financial barriers.
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Programs -->
+    <section class="section section--muted">
+      <div class="container programs">
+        <div class="programs__left">
+          <h2 class="section__title">Our Other Programs</h2>
+          <p class="section__sub">
+            Explore initiatives like Zero Pollution Program and Student Development Program and help
+            create positive impact.
+          </p>
+
+          <div class="programs__cta">
+            <a class="btn btn--green btn--pill" href="#">View all our programs</a>
+            <a class="btn btn--outline-green btn--pill" href="#">Become a volunteer</a>
+          </div>
+        </div>
+
+        <div class="programs__right">
+          <div class="logo-bubble logo-bubble--img">
+            <img src="img/logo/trackback-zero-pollution-circle.png"
+                 alt="TrackBack Zero Pollution Program" />
+          </div>
+
+          <div class="logo-bubble logo-bubble--img">
+            <img src="img/logo/trackback-student-development-circle.png"
+                 alt="TrackBack Student Development Program" />
+          </div>
+
+          <div class="logo-bubble logo-bubble--main">
+            <img src="img/logo/logo-2.png" alt="TrackBack" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Blog -->
+    <section class="section" id="blog">
+      <div class="container">
+        <h2 class="section__title">Latest Updates from our Blog!</h2>
+
+        <div class="blog-grid">
+          <article class="blog-card">
+            <img src="./img/other/blog-1.png" alt="Blog post" />
+            <div class="blog-card__body">
+              <h3>How TrackBack Makes Campus Life Easier</h3>
+              <p>Discover how a centralized lost and found platform saves students time and stress</p>
+              <a class="btn btn--outline-green btn--pill" href="#">Read More</a>
+            </div>
+          </article>
+
+          <article class="blog-card">
+            <img src="./img/other/blog-2.png" alt="Blog post" />
+            <div class="blog-card__body">
+              <h3>Top 5 Most Commonly Lost Items on Campus</h3>
+              <p>From ID cards to smartphones, some items go missing more than others.</p>
+              <a class="btn btn--outline-green btn--pill" href="#">Read More</a>
+            </div>
+          </article>
+
+          <article class="blog-card">
+            <img src="./img/other/blog-3.png" alt="Blog post" />
+            <div class="blog-card__body">
+              <h3>How TrackBack Helps Students Help Each Other</h3>
+              <p>TrackBack is more than a platform—it’s a student community.</p>
+              <a class="btn btn--outline-green btn--pill" href="#">Read More</a>
+            </div>
+          </article>
+        </div>
+
+        <div class="center">
+          <a class="btn btn--green btn--pill" href="#">Learn More on our blog!</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter-strip">
+      <div class="container newsletter-strip__inner">
+        <div class="newsletter-strip__text">
+          <h3>Subscribe to our Newsletter</h3>
+          <p>Get latest updates directly into your email</p>
+        </div>
+
+        <form class="newsletter-strip__form" action="#" method="post">
+          <input type="email" placeholder="Enter your Email" required />
+          <button class="btn btn--green" type="submit">Subscribe</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <div id="footer-placeholder"></div>
+  <script>
+    fetch("footer.html")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("footer-placeholder").innerHTML = data;
+      });
+  </script>
+
+  <script>
+    const backToTop = document.getElementById("backToTop");
+
+    function toggleBackToTop() {
+      if (window.scrollY > 300) backToTop.classList.add("show");
+      else backToTop.classList.remove("show");
+    }
+
+    window.addEventListener("scroll", toggleBackToTop);
+    toggleBackToTop();
+
+    backToTop.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+
 </body>
-
 </html>
