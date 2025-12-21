@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Account - TrackBack</title>
+
+    <link rel="icon" href="img/logo/favicon-circle.png" type="image/png" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet" />
+
+    <link rel="stylesheet" href="./index.css" />
+</head>
+
+<body>
+
+    <header class="topbar">
+        <div class="container topbar__inner">
+            <div class="topbar__left">
+                <span class="topbar__item">📍 Kuratoli, Khilkhet, Dhaka</span>
+                <span class="dot">•</span>
+                <span class="topbar__item">📧 admin@trackback.com</span>
+                <span class="dot">•</span>
+                <span class="topbar__item">📞 (880) 933-3274</span>
+            </div>
+            <div class="topbar__right">
+                <a class="iconlink"><i class="fa-brands fa-facebook-f"></i></a>
+                <a class="iconlink"><i class="fa-brands fa-x-twitter"></i></a>
+                <a class="iconlink"><i class="fa-brands fa-instagram"></i></a>
+                <a class="iconlink"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a class="iconlink"><i class="fa-brands fa-youtube"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <nav class="nav">
+        <div class="container nav__inner">
+            <a href="index.html" class="brand">
+                <img class="brand__img" src="img/logo/logo-2.png" />
+            </a>
+
+            <div class="nav__links">
+                <a class="nav__link" href="index.html#features">Lost & Found</a>
+                <a class="nav__link" href="index.html#support">Knowledgebase</a>
+                <a class="nav__link" href="index.html#blog">Blog</a>
+                <a class="nav__link" href="index.html#contact">Contact</a>
+            </div>
+
+            <div class="nav__actions">
+                <a class="btn btn--blue" href="login.html">Login</a>
+                <a class="btn btn--green" href="registration.html">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="auth">
+            <div class="container auth__grid">
+
+                <div class="auth__info">
+                    <h1 class="auth__title">
+                        Create your <span class="accent">TrackBack</span> account
+                    </h1>
+
+                    <p class="auth__subtitle">
+                        Join students across universities to securely post lost and found items.
+                    </p>
+
+                    <ul class="auth__list">
+                        <li>Report lost belongings</li>
+                        <li>Post found items</li>
+                        <li>Message with other students</li>
+                        <li>Verified university accounts</li>
+                    </ul>
+
+                    <div class="auth__badge">
+                        🎓 Trusted by AIUB, NSU, DU, BRAC students
+                    </div>
+                </div>
+
+                <div class="auth__card">
+                    <h2 class="auth-card__title">Student Registration</h2>
+                    <p class="auth-card__subtitle">Fill the form to create your account</p>
+
+                    <form class="auth-form" action="register.php" method="post">
+
+                        <div class="form-field">
+                            <label>Full Name</label>
+                            <input type="text" name="fullname" placeholder="Your Name" required>
+                        </div>
+
+                        <div class="auth-form__row">
+                            <div class="form-field">
+                                <label>University</label>
+                                <select name="university" required>
+                                    <option value="AIUB">AIUB</option>
+                                </select>
+                            </div>
+
+                            <div class="form-field">
+                                <label>Student ID</label>
+                                <input type="text" name="student_id" placeholder="ID No." autocomplete="off" required>
+
+                            </div>
+                        </div>
+
+                        <div class="form-field">
+                            <label>Email</label>
+                            <input type="email" name="email" placeholder="student@university.edu" required>
+                        </div>
+
+                        <div class="auth-form__row">
+                            <div class="form-field">
+                                <label>Password</label>
+                                <input type="password" name="password" placeholder="Create password" required>
+                            </div>
+
+                            <div class="form-field">
+                                <label>Confirm Password</label>
+                                <input type="password" name="confirm" placeholder="Re-enter password" required>
+                            </div>
+                        </div>
+
+                        <div class="form-field form-field--inline">
+                            <label class="checkbox">
+                                <input type="checkbox" required>
+                                <span>
+                                    I agree to the
+                                    <a href="terms.html" class="form-link">Terms Of Service</a>
+                                    &
+                                    <a href="privacy.html" class="form-link">Privacy Policy</a>
+                                </span>
+                            </label>
+
+                        </div>
+
+                        <button type="submit" class="btn btn--green btn--pill auth-form__btn">
+                            Create Account
+                        </button>
+
+                        <p class="auth-form__footer">
+                            Already registered? <a href="login.html" class="form-link">Login</a>
+                        </p>
+
+                    </form>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer" id="contact">
+        <div class="container footer__grid">
+            <div class="footer__brand">
+                <div class="brand brand--footer">
+                    <img class="brand__img brand__img--footer" src="img/logo/logo-2.png" />
+                </div>
+                <p>
+                    TrackBack is a unified platform where students from different universities
+                    can report misplaced items, browse found belongings, and reconnect lost items
+                    with rightful owners.
+                </p>
+            </div>
+
+            <div class="footer__col">
+                <h4>Features</h4>
+                <a href="#">Lost & Found</a>
+                <a href="#">Latest Updates</a>
+                <a href="#">Blog</a>
+            </div>
+
+            <div class="footer__col">
+                <h4>Support</h4>
+                <a href="#">Contact</a>
+                <a href="#">Terms & Conditions</a>
+                <a href="#">Privacy Policy</a>
+            </div>
+
+            <div class="footer__col">
+                <h4>Contact</h4>
+                <div class="footer__meta">408/1 (Old KA 66/1), Kuratoli, Khilkhet, Dhaka 1229</div>
+                <div class="footer__meta">Tel: (880) 933-3274</div>
+                <div class="footer__meta">admin@trackback.com</div>
+            </div>
+        </div>
+
+        <div class="footer__bottom">
+            <div class="container footer__bottom-inner">
+                <span>Copyright © 2026 TrackBack. All rights reserved.</span>
+                <div class="topbar__right">
+                    <a class="iconlink"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a class="iconlink"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a class="iconlink"><i class="fa-brands fa-instagram"></i></a>
+                    <a class="iconlink"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a class="iconlink"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

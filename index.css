@@ -878,6 +878,37 @@ details[open] summary::after{ content:"–"; }
   color:var(--blue);
 }
 
+.auth-form__row{
+  display:grid;
+  grid-template-columns:0.8fr 1.2fr;
+  gap:12px;
+}
+
+
+.auth-form select{
+  height:44px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  padding:0 14px;
+  font-family:var(--fontBody);
+  font-size:14px;
+  background:#f9fafb;
+  outline:none;
+}
+
+
+.auth-form select:focus{
+  border-color:rgba(33,64,154,.75);
+  box-shadow:0 0 0 1px rgba(33,64,154,.08);
+  background:#fff;
+}
+
+@media (max-width:720px){
+  .auth-form__row{
+    grid-template-columns:1fr;
+  }
+}
+
 /* Responsive */
 @media (max-width:980px){
   .auth__grid{
