@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - TrackBack</title>
+
+  <link rel="icon" href="img/logo/favicon-circle.png" type="image/png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+
+  <link rel="stylesheet" href="./index.css" />
+</head>
+
+<body>
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <div class="topbar__left">
+        <span class="topbar__item">📍 Kuratoli, Khilkhet, Dhaka</span>
+        <span class="dot">•</span>
+        <span class="topbar__item">📧 admin@trackback.com</span>
+        <span class="dot">•</span>
+        <span class="topbar__item">📞 (880) 933-3274</span>
+      </div>
+
+      <div class="topbar__right">
+        <a class="iconlink" href="#" aria-label="Facebook" target="_blank">
+          <i class="fa-brands fa-facebook-f"></i>
+        </a>
+        <a class="iconlink" href="#" aria-label="X (Twitter)" target="_blank">
+          <i class="fa-brands fa-x-twitter"></i>
+        </a>
+        <a class="iconlink" href="#" aria-label="Instagram" target="_blank">
+          <i class="fa-brands fa-instagram"></i>
+        </a>
+        <a class="iconlink" href="#" aria-label="LinkedIn" target="_blank">
+          <i class="fa-brands fa-linkedin-in"></i>
+        </a>
+        <a class="iconlink" href="#" aria-label="YouTube" target="_blank">
+          <i class="fa-brands fa-youtube"></i>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="container nav__inner">
+      <a class="brand" href="index.html">
+        <img class="brand__img" src="img/logo/logo-2.png" alt="TrackBack Logo" />
+      </a>
+
+      <div class="nav__links">
+        <a href="index.html#features" class="nav__link">Lost &amp; Found</a>
+        <a href="index.html#support" class="nav__link">Knowledgebase</a>
+        <a href="index.html#blog" class="nav__link">Blog</a>
+        <a href="index.html#contact" class="nav__link">Contact</a>
+      </div>
+
+      <div class="nav__actions">
+        <a class="btn btn--blue" href="login.html">Login</a>
+        <a class="btn btn--green" href="#">Sign Up</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="auth">
+      <div class="container auth__grid">
+        <!-- Left text / illustration -->
+        <div class="auth__info">
+          <h1 class="auth__title">Welcome back to <span class="accent">TrackBack</span></h1>
+          <p class="auth__subtitle">
+            Sign in to report a lost item, browse found belongings, and stay
+            connected with your campus community.
+          </p>
+
+          <ul class="auth__list">
+            <li>Post lost or found items in seconds</li>
+            <li>Filter items by university and category</li>
+            <li>Secure and student-focused communication</li>
+          </ul>
+
+          <div class="auth__badge">
+            <span>✨ Trusted by students of AIUB, NSU, DU, BRAC &amp; more</span>
+          </div>
+        </div>
+
+        <!-- Right login card -->
+        <div class="auth__card">
+          <h2 class="auth-card__title">Login to your account</h2>
+          <p class="auth-card__subtitle">
+            Enter your details to continue.
+          </p>
+
+          <form class="auth-form" action="login.php" method="post">
+            <div class="form-field">
+              <label for="email">University Email</label>
+              <input type="email" id="email" name="email" placeholder="name@student.aiub.edu" required />
+            </div>
+
+            <div class="form-field">
+              <div class="form-field__row">
+                <label for="password">Password</label>
+                <a href="#" class="form-link">Forgot password?</a>
+              </div>
+              <input type="password" id="password" name="password" placeholder="Enter your password" required />
+            </div>
+
+            <div class="form-field form-field--inline">
+              <label class="checkbox">
+                <input type="checkbox" name="remember" />
+                <span>Keep me signed in</span>
+              </label>
+            </div>
+
+            <button type="submit" class="btn btn--green btn--pill auth-form__btn">
+              Login
+            </button>
+
+            <p class="auth-form__footer">
+              Don’t have an account yet?
+              <a href="#" class="form-link">Sign up now</a>
+            </p>
+          </form>
+
+          <div class="auth-card__meta">
+            <small>By continuing, you agree to TrackBack’s
+              <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.
+            </small>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" id="contact">
+    <div class="container footer__grid">
+      <div class="footer__brand">
+        <div class="brand brand--footer">
+          <img class="brand__img brand__img--footer" src="img/logo/logo-2.png" alt="TrackBack Logo" />
+        </div>
+        <p>
+          TrackBack is a unified platform where students from different universities can report misplaced
+          items, browse all found belongings, and reconnect lost items with rightful owners.
+        </p>
+      </div>
+
+      <div class="footer__col">
+        <h4>Features</h4>
+        <a href="index.html#features">Lost &amp; Found</a>
+        <a href="index.html#blog">Latest Updates</a>
+        <a href="index.html#blog">Blog</a>
+      </div>
+
+      <div class="footer__col">
+        <h4>Support</h4>
+        <a href="index.html#contact">Contact</a>
+        <a href="#">Terms &amp; Conditions</a>
+        <a href="#">Privacy Policy</a>
+      </div>
+
+      <div class="footer__col">
+        <h4>Contact</h4>
+        <div class="footer__meta">408/1 (Old KA 66/1), Kuratoli, Khilkhet, Dhaka 1229</div>
+        <div class="footer__meta">Tel: (880) 933-3274</div>
+        <div class="footer__meta">admin@trackback.com</div>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <div class="container footer__bottom-inner">
+        <span>Copyright © 2026 TrackBack. All rights reserved.</span>
+        <div class="topbar__right">
+          <a class="iconlink" href="#" aria-label="Facebook" target="_blank">
+            <i class="fa-brands fa-facebook-f"></i>
+          </a>
+          <a class="iconlink" href="#" aria-label="X (Twitter)" target="_blank">
+            <i class="fa-brands fa-x-twitter"></i>
+          </a>
+          <a class="iconlink" href="#" aria-label="Instagram" target="_blank">
+            <i class="fa-brands fa-instagram"></i>
+          </a>
+          <a class="iconlink" href="#" aria-label="LinkedIn" target="_blank">
+            <i class="fa-brands fa-linkedin-in"></i>
+          </a>
+          <a class="iconlink" href="#" aria-label="YouTube" target="_blank">
+            <i class="fa-brands fa-youtube"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <a class="float-chat" id="backToTop" href="javascript:void(0)" aria-label="Back to top">
+    <span class="float-chat__ico">⬆</span>
+  </a>
+
+  <script>
+    const backToTop = document.getElementById("backToTop");
+
+    function toggleBackToTop() {
+      if (window.scrollY > 300) backToTop.classList.add("show");
+      else backToTop.classList.remove("show");
+    }
+
+    window.addEventListener("scroll", toggleBackToTop);
+    toggleBackToTop();
+
+    backToTop.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+</body>
+
+</html>
