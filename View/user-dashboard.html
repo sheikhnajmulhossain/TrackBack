@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Dashboard - TrackBack</title>
+
+  <link rel="icon" href="img/logo/favicon-circle.png" type="image/png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+
+  <link rel="stylesheet" href="./user-dashboard.css" />
+</head>
+
+<body>
+  <!-- Navigation Bar -->
+  <nav class="user-nav">
+    <div class="user-nav__container">
+      <div class="user-nav__logo">
+        <a href="index.html">
+          <img src="img/logo/logo-2.png" alt="TrackBack Logo" />
+        </a>
+      </div>
+
+      <div class="user-nav__menu">
+        <a class="user-nav__link" href="#dashboard" data-section="dashboard">
+          <i class="fas fa-home"></i> Dashboard
+        </a>
+        <a class="user-nav__link" href="#search" data-section="search">
+          <i class="fas fa-search"></i> Search Posts
+        </a>
+        <a class="user-nav__link" href="#create" data-section="create">
+          <i class="fas fa-plus-circle"></i> Create Post
+        </a>
+        <a class="user-nav__link" href="#inbox" data-section="inbox">
+          <i class="fas fa-inbox"></i> Inbox <span class="message-badge">3</span>
+        </a>
+      </div>
+
+      <div class="user-nav__profile">
+        <button class="profile-btn" id="profileBtn">
+          <i class="fas fa-user-circle"></i>
+          <span>Profile</span>
+        </button>
+        <div class="profile-dropdown" id="profileDropdown">
+          <a href="#profile" class="dropdown-link" data-section="dashboard">My Profile</a>
+          <a href="#settings" class="dropdown-link" data-section="settings">Settings</a>
+          <a href="#posts" class="dropdown-link" data-section="dashboard">My Posts</a>
+          <a href="index.html">Logout</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-dashboard">
+    <!-- Dashboard Section -->
+    <section id="dashboard" class="section dashboard-section active">
+      <div class="section__header">
+        <h1>Welcome back, Student!</h1>
+        <p>Find or post lost and found items in your campus community</p>
+      </div>
+
+      <div class="dashboard__stats">
+        <div class="stat-card">
+          <div class="stat-icon stat-icon--blue">
+            <i class="fas fa-search"></i>
+          </div>
+          <div class="stat-content">
+            <h3>Search Posts</h3>
+            <p>Browse lost & found items</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon stat-icon--green">
+            <i class="fas fa-plus"></i>
+          </div>
+          <div class="stat-content">
+            <h3>Create Post</h3>
+            <p>Report lost or found item</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon stat-icon--teal">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <div class="stat-content">
+            <h3>Inbox</h3>
+            <p>Connect with other users</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon stat-icon--emerald">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="stat-content">
+            <h3>My Posts</h3>
+            <p>View your listings</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="recent-posts">
+        <h2>Recent Posts</h2>
+        <div class="posts-grid" id="recentPostsGrid">
+          <!-- Posts will be populated here -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Search Section -->
+    <section id="search" class="section search-section">
+      <div class="section__header">
+        <h1>Search Posts</h1>
+        <p>Find lost or found items in your community</p>
+      </div>
+
+      <div class="search-container">
+        <div class="search-filters">
+          <input type="text" class="search-input" id="searchInput" placeholder="Search by item name...">
+          
+          <select id="categoryFilter" class="search-filter">
+            <option value="">All Categories</option>
+            <option value="electronics">Electronics</option>
+            <option value="documents">Documents</option>
+            <option value="accessories">Accessories</option>
+            <option value="clothing">Clothing</option>
+            <option value="other">Other</option>
+          </select>
+
+          <select id="typeFilter" class="search-filter">
+            <option value="">All Types</option>
+            <option value="lost">Lost Items</option>
+            <option value="found">Found Items</option>
+          </select>
+
+          <button class="btn-search" id="searchBtn">
+            <i class="fas fa-search"></i> Search
+          </button>
+        </div>
+
+        <div class="posts-grid" id="searchResultsGrid">
+          <!-- Search results will be populated here -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Create Post Section -->
+    <section id="create" class="section create-section">
+      <div class="section__header">
+        <h1>Create New Post</h1>
+        <p>Report a lost or found item</p>
+      </div>
+
+      <div class="create-form-container">
+        <form class="create-form" id="createPostForm">
+          <div class="form-group">
+            <label>Post Type</label>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="post_type" value="lost" checked>
+                <span>Lost Item</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="post_type" value="found">
+                <span>Found Item</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="itemName">Item Name *</label>
+            <input type="text" id="itemName" name="item_name" required placeholder="e.g., Silver MacBook Pro">
+          </div>
+
+          <div class="form-group">
+            <label for="itemCategory">Category *</label>
+            <select id="itemCategory" name="category" required>
+              <option value="">Select Category</option>
+              <option value="electronics">Electronics</option>
+              <option value="documents">Documents</option>
+              <option value="accessories">Accessories</option>
+              <option value="clothing">Clothing</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="itemDescription">Description *</label>
+            <textarea id="itemDescription" name="item_description" required placeholder="Describe the item in detail..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="location">Location *</label>
+            <input type="text" id="location" name="location" required placeholder="e.g., Library 3rd Floor">
+          </div>
+
+          <div class="form-group">
+            <label for="dateTime">Date & Time *</label>
+            <input type="datetime-local" id="dateTime" name="date_time" required>
+          </div>
+
+          <div class="form-group">
+            <label for="itemImage">Upload Image</label>
+            <div class="file-upload">
+              <input type="file" id="itemImage" name="image" accept="image/*">
+              <label for="itemImage" class="file-label">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <span>Click to upload or drag image</span>
+              </label>
+              <div id="imagePreview" class="image-preview"></div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-submit">
+              <i class="fas fa-paper-plane"></i> Post Item
+            </button>
+            <button type="reset" class="btn-reset">Clear Form</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Inbox Section -->
+    <section id="inbox" class="section inbox-section">
+      <div class="section__header">
+        <h1>Inbox</h1>
+        <p>Messages from other students</p>
+      </div>
+
+      <div class="inbox-container">
+        <div class="inbox-list" id="inboxList">
+          <!-- Messages will be populated here -->
+        </div>
+
+        <div class="message-view" id="messageView">
+          <div class="empty-state">
+            <i class="fas fa-envelope"></i>
+            <p>Select a message to view</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="compose-btn">
+        <button id="composeBtn" class="btn-compose">
+          <i class="fas fa-pen"></i> New Message
+        </button>
+      </div>
+    </section>
+
+    <!-- Settings Section -->
+    <section id="settings" class="section settings-section">
+      <div class="section__header">
+        <h1>Settings & Profile</h1>
+        <p>Manage your account information</p>
+      </div>
+
+      <div class="settings-container">
+        <div class="settings-tabs">
+          <button class="settings-tab active" data-tab="profile">
+            <i class="fas fa-user"></i> Profile
+          </button>
+          <button class="settings-tab" data-tab="account">
+            <i class="fas fa-lock"></i> Account
+          </button>
+          <button class="settings-tab" data-tab="preferences">
+            <i class="fas fa-sliders-h"></i> Preferences
+          </button>
+        </div>
+
+        <!-- Profile Tab -->
+        <div class="settings-content active" id="profile-tab">
+          <h2>Edit Profile</h2>
+          <form class="settings-form" id="profileForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="profileName">Full Name *</label>
+                <input type="text" id="profileName" name="name" value="John Doe" required>
+              </div>
+              <div class="form-group">
+                <label for="profileStudentId">Student ID *</label>
+                <input type="text" id="profileStudentId" name="student_id" value="STU-2024-001" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="profileEmail">Email Address *</label>
+                <input type="email" id="profileEmail" name="email" value="john.doe@university.edu" required>
+              </div>
+              <div class="form-group">
+                <label for="profilePhone">Phone Number</label>
+                <input type="tel" id="profilePhone" name="phone" value="+880 1234 567890">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="profileUniversity">University *</label>
+              <input type="text" id="profileUniversity" name="university" value="University of Technology" required>
+            </div>
+
+            <div class="form-group">
+              <label for="profileBio">Bio</label>
+              <textarea id="profileBio" name="bio" rows="4" placeholder="Tell us about yourself...">Computer Science student passionate about technology and lost & found initiatives.</textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Profile Picture</label>
+              <div class="profile-pic-upload">
+                <div class="profile-pic-preview">
+                  <img id="currentProfilePic" src="https://via.placeholder.com/150" alt="Profile Picture">
+                </div>
+                <div class="profile-pic-input">
+                  <input type="file" id="profilePicture" name="profile_picture" accept="image/*">
+                  <label for="profilePicture" class="file-label-profile">
+                    <i class="fas fa-camera"></i>
+                    <span>Change Photo</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-submit">
+                <i class="fas fa-save"></i> Save Changes
+              </button>
+              <button type="reset" class="btn-reset">Discard Changes</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Account Tab -->
+        <div class="settings-content" id="account-tab">
+          <h2>Account Settings</h2>
+          <form class="settings-form" id="accountForm">
+            <div class="settings-section-box">
+              <h3>Change Password</h3>
+              <div class="form-group">
+                <label for="currentPassword">Current Password *</label>
+                <input type="password" id="currentPassword" name="current_password" required>
+              </div>
+              <div class="form-group">
+                <label for="newPassword">New Password *</label>
+                <input type="password" id="newPassword" name="new_password" required>
+              </div>
+              <div class="form-group">
+                <label for="confirmPassword">Confirm New Password *</label>
+                <input type="password" id="confirmPassword" name="confirm_password" required>
+              </div>
+              <button type="button" class="btn-submit" style="width: auto;">
+                <i class="fas fa-key"></i> Update Password
+              </button>
+            </div>
+
+            <div class="settings-section-box">
+              <h3>Two-Factor Authentication</h3>
+              <p>Enhance your account security with two-factor authentication.</p>
+              <label class="toggle-label">
+                <input type="checkbox" id="twoFactorAuth">
+                <span class="toggle-switch"></span>
+                <span>Enable 2FA</span>
+              </label>
+            </div>
+
+            <div class="settings-section-box danger-zone">
+              <h3>Danger Zone</h3>
+              <p>Be careful with these actions as they cannot be undone.</p>
+              <div class="form-actions">
+                <button type="button" class="btn-danger">
+                  <i class="fas fa-trash"></i> Delete Account
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- Preferences Tab -->
+        <div class="settings-content" id="preferences-tab">
+          <h2>Preferences</h2>
+          <form class="settings-form" id="preferencesForm">
+            <div class="settings-section-box">
+              <h3>Email Notifications</h3>
+              <label class="checkbox-label">
+                <input type="checkbox" name="notify_messages" checked>
+                <span>New messages</span>
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="notify_posts" checked>
+                <span>Post responses</span>
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="notify_updates" checked>
+                <span>Platform updates</span>
+              </label>
+            </div>
+
+            <div class="settings-section-box">
+              <h3>Privacy Settings</h3>
+              <label class="checkbox-label">
+                <input type="checkbox" name="private_profile" checked>
+                <span>Make my profile private</span>
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="show_contact">
+                <span>Show my contact information publicly</span>
+              </label>
+            </div>
+
+            <div class="settings-section-box">
+              <h3>Display Settings</h3>
+              <label for="theme">Theme Preference</label>
+              <select id="theme" name="theme">
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+                <option value="auto">Auto (System)</option>
+              </select>
+
+              <label for="itemsPerPage">Items Per Page</label>
+              <select id="itemsPerPage" name="items_per_page">
+                <option value="6">6 Items</option>
+                <option value="12" selected>12 Items</option>
+                <option value="24">24 Items</option>
+              </select>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-submit">
+                <i class="fas fa-save"></i> Save Preferences
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Compose Message Modal -->
+  <div class="modal" id="composeModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Send Message</h2>
+        <button class="modal-close" id="closeModal">×</button>
+      </div>
+      <form class="modal-form" id="composeForm">
+        <div class="form-group">
+          <label for="recipientEmail">Recipient Email</label>
+          <input type="email" id="recipientEmail" name="recipient_email" required>
+        </div>
+        <div class="form-group">
+          <label for="messageSubject">Subject</label>
+          <input type="text" id="messageSubject" name="subject" required>
+        </div>
+        <div class="form-group">
+          <label for="messageContent">Message</label>
+          <textarea id="messageContent" name="message_content" required rows="6"></textarea>
+        </div>
+        <div class="modal-actions">
+          <button type="submit" class="btn-submit">Send Message</button>
+          <button type="button" class="btn-reset" id="cancelModal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="user-dashboard.js"></script>
+</body>
+
+</html>

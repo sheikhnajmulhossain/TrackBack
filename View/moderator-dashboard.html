@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Moderator Dashboard - TrackBack</title>
+  
+  <link rel="icon" href="img/logo/favicon-circle.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="moderator-dashboard.css" />
+</head>
+<body>
+  <div class="moderator-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <img src="img/logo/favicon-circle.png" alt="TrackBack Logo" class="logo-img" />
+          <span>TrackBack Mod</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="#dashboard" class="nav-item active" data-section="dashboard">
+          <i class="fas fa-chart-line"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="#warn" class="nav-item" data-section="warn">
+          <i class="fas fa-exclamation-triangle"></i>
+          <span>Warn Students</span>
+        </a>
+        <a href="#flag" class="nav-item" data-section="flag">
+          <i class="fas fa-flag"></i>
+          <span>Flag Posts</span>
+        </a>
+        <a href="#disputes" class="nav-item" data-section="disputes">
+          <i class="fas fa-gavel"></i>
+          <span>Settle Disputes</span>
+        </a>
+        <a href="#profile" class="nav-item" data-section="profile">
+          <i class="fas fa-user-circle"></i>
+          <span>My Profile</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="./index.html" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Logout</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="moderator-header">
+        <div class="header-left">
+          <h1>Moderator Dashboard</h1>
+          <p class="header-subtitle">Keep the community safe and healthy</p>
+        </div>
+      </header>
+
+      <!-- Dashboard Section -->
+      <section id="dashboard" class="content-section active">
+        <div class="section-header">
+          <h2>Dashboard Overview</h2>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon" style="background-color: #21409a;">
+              <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="stat-content">
+              <h3>Warnings Issued</h3>
+              <p class="stat-number" id="total-warnings">0</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon" style="background-color: #149444;">
+              <i class="fas fa-flag"></i>
+            </div>
+            <div class="stat-content">
+              <h3>Posts Flagged</h3>
+              <p class="stat-number" id="total-flagged">0</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon" style="background-color: #ef4444;">
+              <i class="fas fa-gavel"></i>
+            </div>
+            <div class="stat-content">
+              <h3>Disputes Resolved</h3>
+              <p class="stat-number" id="total-disputes">0</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon" style="background-color: #f59e0b;">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-content">
+              <h3>Pending Actions</h3>
+              <p class="stat-number" id="pending-actions">0</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Warn Students Section -->
+      <section id="warn" class="content-section">
+        <div class="section-header">
+          <h2>Warn Students</h2>
+          <button class="btn btn-primary" onclick="openWarnModal()">Issue Warning</button>
+        </div>
+
+        <div class="table-container">
+          <table class="mod-table">
+            <thead>
+              <tr>
+                <th>Student ID</th>
+                <th>Student Name</th>
+                <th>Email</th>
+                <th>Warning Count</th>
+                <th>Last Warning</th>
+                <th>Reason</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="warnings-list">
+              <tr>
+                <td colspan="7" style="text-align: center; color: #999;">No warnings issued yet</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Flag Posts Section -->
+      <section id="flag" class="content-section">
+        <div class="section-header">
+          <h2>Flag Posts</h2>
+          <div class="filter-group">
+            <select id="flag-filter" class="filter-select">
+              <option value="">All Flags</option>
+              <option value="pending">Pending Review</option>
+              <option value="resolved">Resolved</option>
+              <option value="spam">Spam</option>
+              <option value="inappropriate">Inappropriate</option>
+              <option value="misleading">Misleading</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="mod-table">
+            <thead>
+              <tr>
+                <th>Post ID</th>
+                <th>Title</th>
+                <th>Posted By</th>
+                <th>Flag Reason</th>
+                <th>Status</th>
+                <th>Flagged Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="flags-list">
+              <tr>
+                <td colspan="7" style="text-align: center; color: #999;">No flagged posts</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Settle Disputes Section -->
+      <section id="disputes" class="content-section">
+        <div class="section-header">
+          <h2>Settle Disputes</h2>
+          <div class="filter-group">
+            <select id="dispute-filter" class="filter-select">
+              <option value="">All Disputes</option>
+              <option value="open">Open</option>
+              <option value="in-progress">In Progress</option>
+              <option value="resolved">Resolved</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="mod-table">
+            <thead>
+              <tr>
+                <th>Dispute ID</th>
+                <th>Complainant</th>
+                <th>Respondent</th>
+                <th>Issue</th>
+                <th>Status</th>
+                <th>Created Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="disputes-list">
+              <tr>
+                <td colspan="7" style="text-align: center; color: #999;">No open disputes</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Moderator Profile Section -->
+      <section id="profile" class="content-section">
+        <div class="section-header">
+          <h2>My Profile</h2>
+        </div>
+
+        <div class="profile-container">
+          <div class="profile-card">
+            <div class="profile-header">
+              <img src="img/logo/favicon-circle.png" alt="Moderator" class="profile-avatar" id="profile-avatar" />
+              <div class="profile-info">
+                <h3 id="profile-name">Loading...</h3>
+                <p id="profile-email" class="profile-subtitle">Loading...</p>
+              </div>
+              <button class="btn btn-primary" onclick="openProfileEditModal()">Edit Profile</button>
+            </div>
+
+            <div class="profile-details">
+              <div class="detail-item">
+                <label>Full Name</label>
+                <p id="detail-name">-</p>
+              </div>
+              <div class="detail-item">
+                <label>Email</label>
+                <p id="detail-email">-</p>
+              </div>
+              <div class="detail-item">
+                <label>Role</label>
+                <p id="detail-role">Moderator</p>
+              </div>
+              <div class="detail-item">
+                <label>Member Since</label>
+                <p id="detail-joined">-</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal for Actions -->
+  <div id="action-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modal-title">Action</h2>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body" id="modal-body"></div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" id="modal-confirm" onclick="confirmAction()">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Warn Student Modal -->
+  <div id="warn-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Issue Warning</h2>
+        <button class="modal-close" onclick="closeWarnModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="warn-form">
+          <div class="form-field">
+            <label for="warn-student-id">Select Student</label>
+            <select id="warn-student-id" name="student_id" required>
+              <option value="">Choose a student...</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="warn-reason">Reason for Warning</label>
+            <select id="warn-reason" name="reason" required>
+              <option value="">Select a reason...</option>
+              <option value="inappropriate-content">Inappropriate Content</option>
+              <option value="spam">Spam</option>
+              <option value="harassment">Harassment</option>
+              <option value="policy-violation">Policy Violation</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="warn-details">Details</label>
+            <textarea id="warn-details" name="details" placeholder="Provide details about the warning..." rows="4"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeWarnModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="submitWarning()">Issue Warning</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flag Post Modal -->
+  <div id="flag-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Flag Post</h2>
+        <button class="modal-close" onclick="closeFlagModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="flag-form">
+          <div class="form-field">
+            <label for="flag-reason">Flag Reason</label>
+            <select id="flag-reason" name="reason" required>
+              <option value="">Select a reason...</option>
+              <option value="spam">Spam</option>
+              <option value="inappropriate">Inappropriate Content</option>
+              <option value="misleading">Misleading Information</option>
+              <option value="duplicate">Duplicate Post</option>
+              <option value="low-quality">Low Quality</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="flag-severity">Severity</label>
+            <select id="flag-severity" name="severity" required>
+              <option value="">Select severity...</option>
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="flag-notes">Notes</label>
+            <textarea id="flag-notes" name="notes" placeholder="Add any additional notes..." rows="4"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeFlagModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="submitFlag()">Flag Post</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settle Dispute Modal -->
+  <div id="dispute-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Settle Dispute</h2>
+        <button class="modal-close" onclick="closeDisputeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="dispute-form">
+          <div class="form-field">
+            <label for="dispute-resolution">Resolution</label>
+            <select id="dispute-resolution" name="resolution" required>
+              <option value="">Select resolution...</option>
+              <option value="favor-complainant">In Favor of Complainant</option>
+              <option value="favor-respondent">In Favor of Respondent</option>
+              <option value="mutual-resolution">Mutual Resolution</option>
+              <option value="dismissed">Dismissed</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="dispute-decision">Decision & Remarks</label>
+            <textarea id="dispute-decision" name="decision" placeholder="Explain your decision..." rows="5"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeDisputeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="submitDisputeResolution()">Resolve Dispute</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Edit Modal -->
+  <div id="profile-edit-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Edit Profile</h2>
+        <button class="modal-close" onclick="closeProfileModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="profile-form">
+          <div class="form-field">
+            <label for="edit-name">Full Name</label>
+            <input type="text" id="edit-name" name="name" placeholder="Enter your full name" required>
+          </div>
+
+          <div class="form-field">
+            <label for="edit-email">Email</label>
+            <input type="email" id="edit-email" name="email" placeholder="Enter your email" required>
+          </div>
+
+          <div class="form-field">
+            <label for="edit-password">Password (Leave blank to keep current)</label>
+            <input type="password" id="edit-password" name="password" placeholder="Enter new password">
+          </div>
+
+          <div class="form-field">
+            <label for="edit-confirm-password">Confirm Password</label>
+            <input type="password" id="edit-confirm-password" name="confirm_password" placeholder="Confirm new password">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeProfileModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveProfileChanges()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="moderator-dashboard.js"></script>
+</body>
+</html>
