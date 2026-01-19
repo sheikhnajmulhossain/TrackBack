@@ -1,3 +1,54 @@
+    <div id="editPostModal" class="modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:5000; align-items:center; justify-content:center;">
+      <div class="modal-content" style="background:#fff; padding:32px; border-radius:12px; max-width:500px; width:90%; position:relative;">
+        <span id="closeEditModal" style="position:absolute; top:12px; right:16px; font-size:24px; cursor:pointer;">&times;</span>
+        <h2>Edit Post</h2>
+        <form id="editPostForm">
+          <div class="form-group">
+            <label>Post Type</label>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="post_type" value="lost">
+                <span>Lost Item</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="post_type" value="found">
+                <span>Found Item</span>
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="editItemName">Item Name *</label>
+            <input type="text" id="editItemName" name="item_name" required placeholder="Enter the item name, e.g., Silver MacBook Pro">
+          </div>
+          <div class="form-group">
+            <label for="editItemCategory">Category *</label>
+            <select id="editItemCategory" name="category" required>
+              <option value="Select Category" disabled selected>Select Category</option>
+              <option value="electronics">Electronics</option>
+              <option value="documents">Documents</option>
+              <option value="accessories">Accessories</option>
+              <option value="clothing">Clothing</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="editItemDescription">Description *</label>
+            <textarea id="editItemDescription" name="item_description" required placeholder="Describe the item in detail, e.g., color, brand, unique features..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="editLocation">Location *</label>
+            <input type="text" id="editLocation" name="location" required placeholder="Enter the location, e.g., Library 3rd Floor">
+          </div>
+          <div class="form-group">
+            <label for="editDateTime">Date & Time *</label>
+            <input type="datetime-local" id="editDateTime" name="date_time" required>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
 <!doctype html>
 <html lang="en">
 
@@ -21,8 +72,7 @@
 </head>
 
 <body>
-  <!-- Navigation Bar -->
-  <nav class="user-nav">
+    <nav class="user-nav">
     <div class="user-nav__container">
       <div class="user-nav__logo">
         <a href="index.html">
@@ -41,7 +91,7 @@
           <i class="fas fa-plus-circle"></i> Create Post
         </a>
         <a class="user-nav__link" href="#inbox" data-section="inbox">
-          <i class="fas fa-inbox"></i> Inbox <span class="message-badge">3</span>
+          <i class="fas fa-inbox"></i> Inbox <span class="message-badge" id="inboxBadge" style="display: none;">0</span>
         </a>
       </div>
 
@@ -51,25 +101,23 @@
           <span>Profile</span>
         </button>
         <div class="profile-dropdown" id="profileDropdown">
-          <a href="#profile" class="dropdown-link" data-section="dashboard">My Profile</a>
           <a href="#settings" class="dropdown-link" data-section="settings">Settings</a>
-          <a href="#posts" class="dropdown-link" data-section="dashboard">My Posts</a>
-          <a href="index.html">Logout</a>
+          <a href="#myposts" class="dropdown-link" data-section="myposts">My Posts</a>
+          <a href="#" id="logoutBtn">Logout</a>
         </div>
       </div>
     </div>
   </nav>
 
   <div class="container-dashboard">
-    <!-- Dashboard Section -->
-    <section id="dashboard" class="section dashboard-section active">
+        <section id="dashboard" class="section dashboard-section active">
       <div class="section__header">
         <h1>Welcome back, Student!</h1>
         <p>Find or post lost and found items in your campus community</p>
       </div>
 
       <div class="dashboard__stats">
-        <div class="stat-card">
+        <div class="stat-card" data-navigate="search" style="cursor: pointer;">
           <div class="stat-icon stat-icon--blue">
             <i class="fas fa-search"></i>
           </div>
@@ -79,7 +127,7 @@
           </div>
         </div>
 
-        <div class="stat-card">
+        <div class="stat-card" data-navigate="create" style="cursor: pointer;">
           <div class="stat-icon stat-icon--green">
             <i class="fas fa-plus"></i>
           </div>
@@ -89,7 +137,7 @@
           </div>
         </div>
 
-        <div class="stat-card">
+        <div class="stat-card" data-navigate="inbox" style="cursor: pointer;">
           <div class="stat-icon stat-icon--teal">
             <i class="fas fa-envelope"></i>
           </div>
@@ -99,7 +147,7 @@
           </div>
         </div>
 
-        <div class="stat-card">
+        <div class="stat-card" data-navigate="myposts" style="cursor: pointer;">
           <div class="stat-icon stat-icon--emerald">
             <i class="fas fa-check-circle"></i>
           </div>
@@ -111,15 +159,16 @@
       </div>
 
       <div class="recent-posts">
-        <h2>Recent Posts</h2>
-        <div class="posts-grid" id="recentPostsGrid">
-          <!-- Posts will be populated here -->
+        <div class="recent-posts-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <h2>Recent Posts</h2>
+          <a href="#" class="view-all-link" onclick="showSection('search'); return false;" style="color: #667eea; text-decoration: none; font-weight: 500;">View All <i class="fas fa-arrow-right"></i></a>
         </div>
+        <div class="posts-grid" id="recentPostsGrid">
+                  </div>
       </div>
     </section>
 
-    <!-- Search Section -->
-    <section id="search" class="section search-section">
+        <section id="search" class="section search-section">
       <div class="section__header">
         <h1>Search Posts</h1>
         <p>Find lost or found items in your community</p>
@@ -150,13 +199,11 @@
         </div>
 
         <div class="posts-grid" id="searchResultsGrid">
-          <!-- Search results will be populated here -->
-        </div>
+                  </div>
       </div>
     </section>
 
-    <!-- Create Post Section -->
-    <section id="create" class="section create-section">
+        <section id="create" class="section create-section">
       <div class="section__header">
         <h1>Create New Post</h1>
         <p>Report a lost or found item</p>
@@ -186,7 +233,7 @@
           <div class="form-group">
             <label for="itemCategory">Category *</label>
             <select id="itemCategory" name="category" required>
-              <option value="">Select Category</option>
+              <option value="Select Category" disabled selected>Select Category</option>
               <option value="electronics">Electronics</option>
               <option value="documents">Documents</option>
               <option value="accessories">Accessories</option>
@@ -232,8 +279,7 @@
       </div>
     </section>
 
-    <!-- Inbox Section -->
-    <section id="inbox" class="section inbox-section">
+        <section id="inbox" class="section inbox-section">
       <div class="section__header">
         <h1>Inbox</h1>
         <p>Messages from other students</p>
@@ -241,8 +287,7 @@
 
       <div class="inbox-container">
         <div class="inbox-list" id="inboxList">
-          <!-- Messages will be populated here -->
-        </div>
+                  </div>
 
         <div class="message-view" id="messageView">
           <div class="empty-state">
@@ -259,8 +304,18 @@
       </div>
     </section>
 
-    <!-- Settings Section -->
-    <section id="settings" class="section settings-section">
+        <section id="myposts" class="section myposts-section">
+      <div class="section__header">
+        <h1>My Posts</h1>
+        <p>Manage your lost and found listings</p>
+      </div>
+
+      <div class="myposts-container">
+        <div class="posts-grid" id="myPostsGrid"></div>
+      </div>
+    </section>
+
+        <section id="settings" class="section settings-section">
       <div class="section__header">
         <h1>Settings & Profile</h1>
         <p>Manage your account information</p>
@@ -274,62 +329,51 @@
           <button class="settings-tab" data-tab="account">
             <i class="fas fa-lock"></i> Account
           </button>
-          <button class="settings-tab" data-tab="preferences">
-            <i class="fas fa-sliders-h"></i> Preferences
-          </button>
         </div>
 
-        <!-- Profile Tab -->
-        <div class="settings-content active" id="profile-tab">
+                <div class="settings-content active" id="profile-tab">
           <h2>Edit Profile</h2>
           <form class="settings-form" id="profileForm">
             <div class="form-row">
               <div class="form-group">
                 <label for="profileName">Full Name *</label>
-                <input type="text" id="profileName" name="name" value="John Doe" required>
+                <input type="text" id="profileName" name="name" required>
               </div>
               <div class="form-group">
                 <label for="profileStudentId">Student ID *</label>
-                <input type="text" id="profileStudentId" name="student_id" value="STU-2024-001" required>
+                <input type="text" id="profileStudentId" name="student_id" required>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
                 <label for="profileEmail">Email Address *</label>
-                <input type="email" id="profileEmail" name="email" value="john.doe@university.edu" required>
+                <input type="email" id="profileEmail" name="email" required>
               </div>
               <div class="form-group">
                 <label for="profilePhone">Phone Number</label>
-                <input type="tel" id="profilePhone" name="phone" value="+880 1234 567890">
+                <input type="tel" id="profilePhone" name="phone">
               </div>
             </div>
 
             <div class="form-group">
               <label for="profileUniversity">University *</label>
-              <input type="text" id="profileUniversity" name="university" value="University of Technology" required>
+              <select id="profileUniversity" name="university" required>
+                <option value="" disabled selected> Select your university</option>
+                <option value="AIUB">AIUB</option>
+                <option value="NSU">NSU</option>
+                <option value="DU">DU</option>
+                <option value="BRAC">BRAC</option>
+                <option value="EWU">EWU</option>
+                <option value="UIU">UIU</option>
+                <option value="BUP">BUP</option>
+                <option value="MIST">MIST</option>
+                <option value="SEU">SEU</option>
+                <option value="DIU">DIU</option>
+                <option value="BUET">BUET</option>
+              </select>
             </div>
 
-            <div class="form-group">
-              <label for="profileBio">Bio</label>
-              <textarea id="profileBio" name="bio" rows="4" placeholder="Tell us about yourself...">Computer Science student passionate about technology and lost & found initiatives.</textarea>
-            </div>
-
-            <div class="form-group">
-              <label>Profile Picture</label>
-              <div class="profile-pic-upload">
-                <div class="profile-pic-preview">
-                  <img id="currentProfilePic" src="https://via.placeholder.com/150" alt="Profile Picture">
-                </div>
-                <div class="profile-pic-input">
-                  <input type="file" id="profilePicture" name="profile_picture" accept="image/*">
-                  <label for="profilePicture" class="file-label-profile">
-                    <i class="fas fa-camera"></i>
-                    <span>Change Photo</span>
-                  </label>
-                </div>
-              </div>
-            </div>
 
             <div class="form-actions">
               <button type="submit" class="btn-submit">
@@ -340,38 +384,43 @@
           </form>
         </div>
 
-        <!-- Account Tab -->
-        <div class="settings-content" id="account-tab">
+                <div class="settings-content" id="account-tab">
           <h2>Account Settings</h2>
           <form class="settings-form" id="accountForm">
             <div class="settings-section-box">
               <h3>Change Password</h3>
               <div class="form-group">
                 <label for="currentPassword">Current Password *</label>
-                <input type="password" id="currentPassword" name="current_password" required>
+                <div class="password-input-container">
+                  <input type="password" id="currentPassword" name="current_password" required>
+                  <button type="button" class="password-toggle" onclick="togglePassword('currentPassword')">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </div>
               </div>
               <div class="form-group">
                 <label for="newPassword">New Password *</label>
-                <input type="password" id="newPassword" name="new_password" required>
+                <div class="password-input-container">
+                  <input type="password" id="newPassword" name="new_password" required>
+                  <button type="button" class="password-toggle" onclick="togglePassword('newPassword')">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </div>
               </div>
               <div class="form-group">
                 <label for="confirmPassword">Confirm New Password *</label>
-                <input type="password" id="confirmPassword" name="confirm_password" required>
+                <div class="password-input-container">
+                  <input type="password" id="confirmPassword" name="confirm_password" required>
+                  <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </div>
               </div>
               <button type="button" class="btn-submit" style="width: auto;">
                 <i class="fas fa-key"></i> Update Password
               </button>
             </div>
 
-            <div class="settings-section-box">
-              <h3>Two-Factor Authentication</h3>
-              <p>Enhance your account security with two-factor authentication.</p>
-              <label class="toggle-label">
-                <input type="checkbox" id="twoFactorAuth">
-                <span class="toggle-switch"></span>
-                <span>Enable 2FA</span>
-              </label>
-            </div>
 
             <div class="settings-section-box danger-zone">
               <h3>Danger Zone</h3>
@@ -384,69 +433,11 @@
             </div>
           </form>
         </div>
-
-        <!-- Preferences Tab -->
-        <div class="settings-content" id="preferences-tab">
-          <h2>Preferences</h2>
-          <form class="settings-form" id="preferencesForm">
-            <div class="settings-section-box">
-              <h3>Email Notifications</h3>
-              <label class="checkbox-label">
-                <input type="checkbox" name="notify_messages" checked>
-                <span>New messages</span>
-              </label>
-              <label class="checkbox-label">
-                <input type="checkbox" name="notify_posts" checked>
-                <span>Post responses</span>
-              </label>
-              <label class="checkbox-label">
-                <input type="checkbox" name="notify_updates" checked>
-                <span>Platform updates</span>
-              </label>
-            </div>
-
-            <div class="settings-section-box">
-              <h3>Privacy Settings</h3>
-              <label class="checkbox-label">
-                <input type="checkbox" name="private_profile" checked>
-                <span>Make my profile private</span>
-              </label>
-              <label class="checkbox-label">
-                <input type="checkbox" name="show_contact">
-                <span>Show my contact information publicly</span>
-              </label>
-            </div>
-
-            <div class="settings-section-box">
-              <h3>Display Settings</h3>
-              <label for="theme">Theme Preference</label>
-              <select id="theme" name="theme">
-                <option value="light">Light</option>
-                <option value="dark">Dark</option>
-                <option value="auto">Auto (System)</option>
-              </select>
-
-              <label for="itemsPerPage">Items Per Page</label>
-              <select id="itemsPerPage" name="items_per_page">
-                <option value="6">6 Items</option>
-                <option value="12" selected>12 Items</option>
-                <option value="24">24 Items</option>
-              </select>
-            </div>
-
-            <div class="form-actions">
-              <button type="submit" class="btn-submit">
-                <i class="fas fa-save"></i> Save Preferences
-              </button>
-            </div>
-          </form>
-        </div>
       </div>
     </section>
   </div>
 
-  <!-- Compose Message Modal -->
-  <div class="modal" id="composeModal">
+    <div class="modal" id="composeModal">
     <div class="modal-content">
       <div class="modal-header">
         <h2>Send Message</h2>

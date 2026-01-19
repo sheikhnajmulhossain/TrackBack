@@ -589,6 +589,48 @@ img {
   accent-color: var(--primary-green);
 }
 
+/* Password input with toggle */
+.password-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-container input {
+  flex: 1;
+  padding-right: 45px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 12px 45px 12px 12px;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+.password-input-container input:focus {
+  outline: none;
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 3px;
+  transition: color 0.3s ease;
+  z-index: 1;
+}
+
+.password-toggle:hover {
+  color: var(--primary-blue);
+}
+
 .file-upload {
   position: relative;
   border: 2px dashed var(--primary-green);
@@ -677,6 +719,65 @@ img {
   background: var(--border-color);
 }
 
+/* ========== MY POSTS SECTION ========== */
+.myposts-section {
+  padding: 30px;
+}
+
+.myposts-filters {
+  margin-bottom: 25px;
+}
+
+.myposts-filters .filter-select {
+  padding: 12px 16px;
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-dark);
+  background: white;
+  min-width: 200px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.myposts-filters .filter-select:focus {
+  outline: none;
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 3px var(--light-green);
+}
+
+.myposts-container {
+  background: white;
+  padding: 25px;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.my-post-card {
+  position: relative;
+}
+
+.my-post-card .btn-edit:hover {
+  background: #5a6fd6;
+}
+
+.my-post-card .btn-delete:hover {
+  background: #dc2626;
+}
+
+.status-approved {
+  background: #149444;
+}
+
+.status-pending {
+  background: #f59e0b;
+}
+
+.status-banned {
+  background: #ef4444;
+}
+
 /* ========== INBOX SECTION ========== */
 .inbox-container {
   display: grid;
@@ -733,6 +834,13 @@ img {
   padding: 30px;
   overflow-y: auto;
   display: flex;
+  flex-direction: column;
+}
+
+.message-view .empty-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
@@ -750,7 +858,10 @@ img {
 }
 
 .message-content {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
 }
 
 .message-header {
@@ -762,14 +873,15 @@ img {
 .message-from {
   font-weight: 600;
   color: var(--text-dark);
-  margin-bottom: 5px;
+  margin-bottom: 8px;
+  font-size: 14px;
 }
 
 .message-subject-full {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
   color: var(--text-dark);
-  margin-bottom: 5px;
+  margin-bottom: 8px;
 }
 
 .message-date {
@@ -778,8 +890,16 @@ img {
 }
 
 .message-body {
+  flex: 1;
   line-height: 1.8;
   color: var(--text-dark);
+  font-size: 15px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  background: var(--bg-light);
+  padding: 20px;
+  border-radius: var(--border-radius);
+  min-height: 150px;
 }
 
 .compose-btn {
