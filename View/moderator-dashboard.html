@@ -5,21 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Moderator Dashboard - TrackBack</title>
   
-  <link rel="icon" href="img/logo/favicon-circle.png" type="image/png" />
+  <link rel="icon" href="img/logo/logo.png" type="image/png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   
+  <link rel="stylesheet" href="user-dashboard.css" />
   <link rel="stylesheet" href="moderator-dashboard.css" />
 </head>
 <body>
   <div class="moderator-container">
-    <!-- Sidebar -->
     <aside class="sidebar">
       <div class="sidebar-header">
         <div class="logo">
-          <img src="img/logo/favicon-circle.png" alt="TrackBack Logo" class="logo-img" />
+          <img src="img/logo/logo.png" alt="TrackBack Logo" class="logo-img" />
           <span>TrackBack Mod</span>
         </div>
       </div>
@@ -29,17 +29,9 @@
           <i class="fas fa-chart-line"></i>
           <span>Dashboard</span>
         </a>
-        <a href="#warn" class="nav-item" data-section="warn">
-          <i class="fas fa-exclamation-triangle"></i>
-          <span>Warn Students</span>
-        </a>
-        <a href="#flag" class="nav-item" data-section="flag">
-          <i class="fas fa-flag"></i>
-          <span>Flag Posts</span>
-        </a>
-        <a href="#disputes" class="nav-item" data-section="disputes">
-          <i class="fas fa-gavel"></i>
-          <span>Settle Disputes</span>
+        <a href="#watchposts" class="nav-item" data-section="watchposts">
+          <i class="fas fa-eye"></i>
+          <span>Watch Posts</span>
         </a>
         <a href="#profile" class="nav-item" data-section="profile">
           <i class="fas fa-user-circle"></i>
@@ -48,16 +40,15 @@
       </nav>
 
       <div class="sidebar-footer">
-        <a href="./index.html" class="logout-btn">
+        <a href="#" id="logoutBtn" class="logout-btn">
           <i class="fas fa-sign-out-alt"></i>
           <span>Logout</span>
         </a>
       </div>
     </aside>
 
-    <!-- Main Content -->
     <main class="main-content">
-      <!-- Header -->
+      
       <header class="moderator-header">
         <div class="header-left">
           <h1>Moderator Dashboard</h1>
@@ -65,7 +56,7 @@
         </div>
       </header>
 
-      <!-- Dashboard Section -->
+      
       <section id="dashboard" class="content-section active">
         <div class="section-header">
           <h2>Dashboard Overview</h2>
@@ -92,29 +83,33 @@
             </div>
           </div>
 
-          <div class="stat-card">
-            <div class="stat-icon" style="background-color: #ef4444;">
-              <i class="fas fa-gavel"></i>
-            </div>
-            <div class="stat-content">
-              <h3>Disputes Resolved</h3>
-              <p class="stat-number" id="total-disputes">0</p>
-            </div>
-          </div>
 
           <div class="stat-card">
             <div class="stat-icon" style="background-color: #f59e0b;">
               <i class="fas fa-clock"></i>
             </div>
             <div class="stat-content">
-              <h3>Pending Actions</h3>
-              <p class="stat-number" id="pending-actions">0</p>
+              <h3>Total Posts</h3>
+              <p class="stat-number" id="total-posts">0</p>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Warn Students Section -->
+      
+      <section id="watchposts" class="content-section">
+        <div class="section-header">
+          <h2>Watch Posts</h2>
+          <p style="color: #666; margin-top: 5px;">Monitor all posts in the system</p>
+        </div>
+
+
+        <div class="posts-grid" id="watchPostsGrid">
+          
+        </div>
+      </section>
+
+      
       <section id="warn" class="content-section">
         <div class="section-header">
           <h2>Warn Students</h2>
@@ -143,18 +138,16 @@
         </div>
       </section>
 
-      <!-- Flag Posts Section -->
+      
       <section id="flag" class="content-section">
         <div class="section-header">
           <h2>Flag Posts</h2>
           <div class="filter-group">
             <select id="flag-filter" class="filter-select">
               <option value="">All Flags</option>
-              <option value="pending">Pending Review</option>
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
               <option value="resolved">Resolved</option>
-              <option value="spam">Spam</option>
-              <option value="inappropriate">Inappropriate</option>
-              <option value="misleading">Misleading</option>
             </select>
           </div>
         </div>
@@ -181,43 +174,7 @@
         </div>
       </section>
 
-      <!-- Settle Disputes Section -->
-      <section id="disputes" class="content-section">
-        <div class="section-header">
-          <h2>Settle Disputes</h2>
-          <div class="filter-group">
-            <select id="dispute-filter" class="filter-select">
-              <option value="">All Disputes</option>
-              <option value="open">Open</option>
-              <option value="in-progress">In Progress</option>
-              <option value="resolved">Resolved</option>
-            </select>
-          </div>
-        </div>
 
-        <div class="table-container">
-          <table class="mod-table">
-            <thead>
-              <tr>
-                <th>Dispute ID</th>
-                <th>Complainant</th>
-                <th>Respondent</th>
-                <th>Issue</th>
-                <th>Status</th>
-                <th>Created Date</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="disputes-list">
-              <tr>
-                <td colspan="7" style="text-align: center; color: #999;">No open disputes</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- Moderator Profile Section -->
       <section id="profile" class="content-section">
         <div class="section-header">
           <h2>My Profile</h2>
@@ -258,7 +215,7 @@
     </main>
   </div>
 
-  <!-- Modal for Actions -->
+  
   <div id="action-modal" class="modal">
     <div class="modal-content">
       <div class="modal-header">
@@ -273,7 +230,7 @@
     </div>
   </div>
 
-  <!-- Warn Student Modal -->
+  
   <div id="warn-modal" class="modal">
     <div class="modal-content">
       <div class="modal-header">
@@ -314,7 +271,7 @@
     </div>
   </div>
 
-  <!-- Flag Post Modal -->
+  
   <div id="flag-modal" class="modal">
     <div class="modal-content">
       <div class="modal-header">
@@ -353,12 +310,13 @@
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary" onclick="closeFlagModal()">Cancel</button>
+        <button class="btn btn-warning" onclick="unflagPost()">Unflag</button>
         <button class="btn btn-primary" onclick="submitFlag()">Flag Post</button>
       </div>
     </div>
   </div>
 
-  <!-- Settle Dispute Modal -->
+  
   <div id="dispute-modal" class="modal">
     <div class="modal-content">
       <div class="modal-header">
@@ -391,7 +349,113 @@
     </div>
   </div>
 
-  <!-- Profile Edit Modal -->
+  
+  <div id="flag-warn-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Flag Post & Warn User</h2>
+        <button class="modal-close" onclick="closeFlagWarnModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="margin-bottom: 15px;">You are about to flag: <strong id="flag-warn-post-name"></strong></p>
+        <form id="flag-warn-form">
+          <div class="form-field">
+            <label for="flag-warn-reason">Reason</label>
+            <select id="flag-warn-reason" name="reason" required>
+              <option value="">Select a reason...</option>
+              <option value="Inappropriate Content">Inappropriate Content</option>
+              <option value="Spam">Spam</option>
+              <option value="Misleading Information">Misleading Information</option>
+              <option value="Harassment">Harassment</option>
+              <option value="Policy Violation">Policy Violation</option>
+              <option value="Duplicate Post">Duplicate Post</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="flag-warn-details">Details</label>
+            <textarea id="flag-warn-details" name="details" placeholder="Provide details about the issue..." rows="4"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeFlagWarnModal()">Cancel</button>
+        <button class="btn btn-danger" onclick="submitFlagAndWarn()"><i class="fas fa-flag"></i> Flag & Warn</button>
+      </div>
+    </div>
+  </div>
+
+  
+  <div id="flag-modal2" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Flag Post</h2>
+        <button class="modal-close" onclick="closeFlagModal2()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="margin-bottom: 15px;">Flagging post: <strong id="flag-modal2-post-name"></strong></p>
+        <form id="flag-form2">
+          <div class="form-field">
+            <label for="flag-reason2">Reason</label>
+            <select id="flag-reason2" name="reason" required>
+              <option value="">Select a reason...</option>
+              <option value="Inappropriate Content">Inappropriate Content</option>
+              <option value="Spam">Spam</option>
+              <option value="Misleading Information">Misleading Information</option>
+              <option value="Duplicate Post">Duplicate Post</option>
+              <option value="Policy Violation">Policy Violation</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="flag-details2">Details</label>
+            <textarea id="flag-details2" name="details" placeholder="Provide details..." rows="4"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeFlagModal2()">Cancel</button>
+        <button class="btn btn-danger" onclick="submitFlag2()"><i class="fas fa-flag"></i> Flag Post</button>
+      </div>
+    </div>
+  </div>
+
+  
+  <div id="warn-modal2" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Warn User</h2>
+        <button class="modal-close" onclick="closeWarnModal2()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="margin-bottom: 15px;">Warning user for post: <strong id="warn-modal2-post-name"></strong></p>
+        <form id="warn-form2">
+          <div class="form-field">
+            <label for="warn-reason2">Reason</label>
+            <select id="warn-reason2" name="reason" required>
+              <option value="">Select a reason...</option>
+              <option value="Inappropriate Content">Inappropriate Content</option>
+              <option value="Spam">Spam</option>
+              <option value="Harassment">Harassment</option>
+              <option value="Policy Violation">Policy Violation</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="warn-details2">Details</label>
+            <textarea id="warn-details2" name="details" placeholder="Provide details..." rows="4"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeWarnModal2()">Cancel</button>
+        <button class="btn btn-warning" onclick="submitWarn2()"><i class="fas fa-exclamation-triangle"></i> Issue Warning</button>
+      </div>
+    </div>
+  </div>
+
+  
   <div id="profile-edit-modal" class="modal">
     <div class="modal-content">
       <div class="modal-header">

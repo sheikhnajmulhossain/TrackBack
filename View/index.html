@@ -22,7 +22,6 @@
 
 <body>
 
-  <!-- Header -->
   <div id="header-placeholder"></div>
   <script>
     fetch("header.html")
@@ -33,7 +32,7 @@
   </script>
 
   <main>
-    <!-- Hero Section -->
+    
     <section class="hero">
       <div class="container hero__grid">
         <div class="hero__left">
@@ -106,7 +105,7 @@
       </div>
     </section>
 
-    <!-- About us block -->
+    
     <section class="band band--blue" id="features">
       <div class="container band__grid">
         <div>
@@ -134,7 +133,7 @@
       </div>
     </section>
 
-    <!-- Newsletter  -->
+    
     <section class="newsletter-strip">
       <div class="container newsletter-strip__inner">
         <div class="newsletter-strip__text">
@@ -149,7 +148,7 @@
       </div>
     </section>
 
-    <!-- Quick nav Section -->
+    
     <section class="section" id="support">
       <div class="container">
         <h2 class="section__title">How can we help you?</h2>
@@ -162,12 +161,12 @@
           <a class="help-item" href="#"><span class="help-ico">🔎</span><span>Search for a user</span></a>
           <a class="help-item" href="#"><span class="help-ico">❓</span><span>Q&amp;A Knowledgebase</span></a>
           <a class="help-item" href="#"><span class="help-ico">ℹ️</span><span>Learn more about us</span></a>
-          <a class="help-item" href="#"><span class="help-ico">📝</span><span>Create an account</span></a>
+          <a class="help-item" href="./registration.html"><span class="help-ico">📝</span><span>Create an account</span></a>
         </div>
       </div>
     </section>
 
-    <!-- Partners -->
+    
     <section class="section section--muted">
       <div class="container">
         <h2 class="section__title">Become our Partner</h2>
@@ -227,7 +226,7 @@
       </div>
     </section>
 
-    <!-- FAQ -->
+    
     <section class="section">
       <div class="container">
         <h2 class="section__title">Few Frequently Asked Questions</h2>
@@ -275,81 +274,7 @@
       </div>
     </section>
 
-    <!-- Programs -->
-    <section class="section section--muted">
-      <div class="container programs">
-        <div class="programs__left">
-          <h2 class="section__title">Our Other Programs</h2>
-          <p class="section__sub">
-            Explore initiatives like Zero Pollution Program and Student Development Program and help
-            create positive impact.
-          </p>
-
-          <div class="programs__cta">
-            <a class="btn btn--green btn--pill" href="#">View all our programs</a>
-            <a class="btn btn--outline-green btn--pill" href="#">Become a volunteer</a>
-          </div>
-        </div>
-
-        <div class="programs__right">
-          <div class="logo-bubble logo-bubble--img">
-            <img src="img/logo/trackback-zero-pollution-circle.png"
-                 alt="TrackBack Zero Pollution Program" />
-          </div>
-
-          <div class="logo-bubble logo-bubble--img">
-            <img src="img/logo/trackback-student-development-circle.png"
-                 alt="TrackBack Student Development Program" />
-          </div>
-
-          <div class="logo-bubble logo-bubble--main">
-            <img src="img/logo/logo-2.png" alt="TrackBack" />
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Blog -->
-    <section class="section" id="blog">
-      <div class="container">
-        <h2 class="section__title">Latest Updates from our Blog!</h2>
-
-        <div class="blog-grid">
-          <article class="blog-card">
-            <img src="./img/other/blog-1.png" alt="Blog post" />
-            <div class="blog-card__body">
-              <h3>How TrackBack Makes Campus Life Easier</h3>
-              <p>Discover how a centralized lost and found platform saves students time and stress</p>
-              <a class="btn btn--outline-green btn--pill" href="#">Read More</a>
-            </div>
-          </article>
-
-          <article class="blog-card">
-            <img src="./img/other/blog-2.png" alt="Blog post" />
-            <div class="blog-card__body">
-              <h3>Top 5 Most Commonly Lost Items on Campus</h3>
-              <p>From ID cards to smartphones, some items go missing more than others.</p>
-              <a class="btn btn--outline-green btn--pill" href="#">Read More</a>
-            </div>
-          </article>
-
-          <article class="blog-card">
-            <img src="./img/other/blog-3.png" alt="Blog post" />
-            <div class="blog-card__body">
-              <h3>How TrackBack Helps Students Help Each Other</h3>
-              <p>TrackBack is more than a platform—it’s a student community.</p>
-              <a class="btn btn--outline-green btn--pill" href="#">Read More</a>
-            </div>
-          </article>
-        </div>
-
-        <div class="center">
-          <a class="btn btn--green btn--pill" href="#">Learn More on our blog!</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Newsletter -->
+    
     <section class="newsletter-strip">
       <div class="container newsletter-strip__inner">
         <div class="newsletter-strip__text">
@@ -365,7 +290,7 @@
     </section>
   </main>
 
-  <!-- Footer -->
+  
   <div id="footer-placeholder"></div>
   <script>
     fetch("footer.html")
@@ -375,10 +300,16 @@
       });
   </script>
 
+  
+  <button id="backToTop" class="back-to-top" aria-label="Back to top">
+    <i class="fa-solid fa-arrow-up"></i>
+  </button>
+
   <script>
     const backToTop = document.getElementById("backToTop");
 
     function toggleBackToTop() {
+      if (!backToTop) return;
       if (window.scrollY > 300) backToTop.classList.add("show");
       else backToTop.classList.remove("show");
     }
@@ -386,9 +317,11 @@
     window.addEventListener("scroll", toggleBackToTop);
     toggleBackToTop();
 
-    backToTop.addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
+    if (backToTop) {
+      backToTop.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    }
   </script>
 
 </body>

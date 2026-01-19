@@ -1,15 +1,28 @@
 <?php
+
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
+
+
+ini_set('session.cookie_lifetime', 86400);
+ini_set('session.cookie_path', '/');
+ini_set('session.cookie_httponly', 1);
+ini_set('session.use_only_cookies', 1);
 session_start();
 
-// Include database connection and functions
+
 include '../Model/database.php';
 include '../Model/functions.php';
 
-// Get request method
+
+setCorsHeaders();
+
+
 $method = $_SERVER['REQUEST_METHOD'];
 $action = $_GET['action'] ?? $_POST['action'] ?? null;
 
-// Handle requests
+
 switch ($action) {
     case 'register':
         handleRegister($conn);
@@ -30,102 +43,93 @@ switch ($action) {
         sendError('Invalid action', 400);
 }
 
-/**
- * Handle user registration
- */
 function handleRegister($conn) {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         sendError('Method not allowed', 405);
     }
-    
+
     $studentId = $_POST['student_id'] ?? '';
     $name = $_POST['name'] ?? '';
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
-    $confirmPassword = $_POST['confirm_password'] ?? '';
     $university = $_POST['university'] ?? '';
-    
-    // Validation
+    $confirmPassword = $_POST['confirm_password'] ?? '';
+
     if (empty($studentId) || empty($name) || empty($email) || empty($password)) {
         sendError('All fields are required', 400);
     }
-    
+
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         sendError('Invalid email format', 400);
     }
-    
+
     if ($password !== $confirmPassword) {
         sendError('Passwords do not match', 400);
     }
-    
-    if (strlen($password) < 8) {
-        sendError('Password must be at least 8 characters long', 400);
+
+    if (strlen($password) < 6) {
+        sendError('Password must be at least 6 characters long', 400);
     }
-    
+
     if (studentIdExists($conn, $studentId)) {
         sendError('Student ID already registered', 409);
     }
-    
+
     if (emailExists($conn, $email)) {
         sendError('Email already registered', 409);
     }
-    
-    // Create user
-    $result = createUser($conn, $studentId, $name, $email, $password, 'student', $university);
-    
-    if ($result['success']) {
-        sendSuccess(['user_id' => $result['user_id']], 'Registration successful. Please wait for admin approval.');
+
+    $userId = registerUser($conn, $studentId, $name, $email, $university, $password);
+
+    if ($userId) {
+        sendSuccess(['user_id' => $userId], 'Registration successful. Please wait for admin approval.');
     } else {
-        sendError('Registration failed: ' . $result['error'], 500);
+        sendError('Registration failed', 500);
     }
 }
 
-/**
- * Handle user login
- */
 function handleLogin($conn) {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         sendError('Method not allowed', 405);
     }
-    
+
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
-    
+
     if (empty($email) || empty($password)) {
         sendError('Email and password are required', 400);
     }
-    
-    $user = getUserByEmail($conn, $email);
-    
+
+    $user = authenticateUser($conn, $email, $password);
+
     if (!$user) {
         sendError('Invalid credentials', 401);
     }
-    
-    // Check if account is approved
+
+
     if ($user['account_status'] === 'banned') {
-        sendError('Your account has been banned', 403);
+        sendError('Your account has been banned. Please contact the administrator for assistance.', 403);
     }
-    
+
     if ($user['account_status'] === 'pending') {
-        sendError('Your account is pending approval. Please wait for admin approval.', 403);
+        sendError('Your account has not been approved by the administrator. Please contact the administrator for approval.', 403);
     }
-    
-    // Verify password
-    if (!verifyPassword($password, $user['password_hash'])) {
-        sendError('Invalid credentials', 401);
-    }
-    
-    // Create session
+
+
     $_SESSION['user_id'] = $user['user_id'];
     $_SESSION['student_id'] = $user['student_id'];
     $_SESSION['name'] = $user['name'];
     $_SESSION['email'] = $user['email'];
     $_SESSION['user_type'] = $user['user_type'];
     $_SESSION['university'] = $user['university'];
-    
-    // Log action
-    logAction($conn, $user['user_id'], 'LOGIN', ['ip' => $_SERVER['REMOTE_ADDR']]);
-    
+
+    session_regenerate_id(true);
+
+    $cookieParams = session_get_cookie_params();
+    setcookie(session_name(), session_id(), time() + (int)$cookieParams['lifetime'], $cookieParams['path'], $cookieParams['domain'], $cookieParams['secure'], $cookieParams['httponly']);
+
+    logAction($conn, $user['user_id'], 'LOGIN', 'User logged in via API');
+
     sendSuccess([
         'user_id' => $user['user_id'],
         'name' => $user['name'],
@@ -135,22 +139,31 @@ function handleLogin($conn) {
     ], 'Login successful');
 }
 
-/**
- * Handle user logout
- */
 function handleLogout() {
     if (isset($_SESSION['user_id'])) {
         $userId = $_SESSION['user_id'];
+        
+        $_SESSION = [];
+
+        
+        if (ini_get('session.use_cookies')) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+        }
+
+        
+        if (isset($_COOKIE['user_email'])) {
+            setcookie('user_email', '', time() - 42000, '/');
+        }
+
         session_destroy();
+
         sendSuccess([], 'Logout successful');
     } else {
         sendError('No active session', 400);
     }
 }
 
-/**
- * Check user session
- */
 function handleCheckSession() {
     if (isset($_SESSION['user_id'])) {
         sendSuccess([
@@ -164,20 +177,17 @@ function handleCheckSession() {
     }
 }
 
-/**
- * Handle email verification
- */
 function handleVerifyEmail($conn) {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         sendError('Method not allowed', 405);
     }
-    
+
     $email = $_POST['email'] ?? '';
-    
+
     if (empty($email)) {
         sendError('Email is required', 400);
     }
-    
+
     if (emailExists($conn, $email)) {
         sendSuccess([], 'Email is already registered');
     } else {
