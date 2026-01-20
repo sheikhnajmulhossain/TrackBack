@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
+
 async function checkAdminStatus() {
   try {
     const response = await fetch(`${API_BASE}/admin_api.php?action=get_admin_profile`, {
