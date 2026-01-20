@@ -6,6 +6,8 @@ function deleteUserAccount($conn, $userId) {
     return $conn->query($query);
 }
 
+
+
 function deleteAccountHandler($conn) {
     $userId = (int)$_SESSION['user_id'];
     if (!$userId) {

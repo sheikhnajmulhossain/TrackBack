@@ -4,6 +4,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 0);
 ini_set('log_errors', 1);
 
+ 
 
 ini_set('session.cookie_lifetime', 86400);
 ini_set('session.cookie_path', '/');

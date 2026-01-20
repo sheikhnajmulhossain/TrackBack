@@ -27,6 +27,9 @@ async function fetchAPI(endpoint, options = {}) {
 }
 
 
+
+
+
 document.addEventListener('DOMContentLoaded', function() {
 
   checkUserStatus().then(isValid => {
