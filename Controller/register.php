@@ -1,24 +1,28 @@
 <?php
+
+ini_set('session.cookie_lifetime', 86400); 
+ini_set('session.cookie_path', '/');
+ini_set('session.cookie_httponly', 1);
+ini_set('session.use_only_cookies', 1);
 session_start();
 
-// Include database connection and functions
+
 include '../Model/database.php';
 include '../Model/functions.php';
 
-// Initialize error and success messages
+
 $error = '';
 $success = '';
 
-// Check if form was submitted
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $fullname = $_POST['fullname'] ?? '';
     $student_id = $_POST['student_id'] ?? '';
     $email = $_POST['email'] ?? '';
     $university = $_POST['university'] ?? '';
     $password = $_POST['password'] ?? '';
-    $confirm_password = $_POST['confirm_password'] ?? '';
+    $confirm_password = $_POST['confirm'] ?? '';
     
-    // Validation
     if (empty($fullname) || empty($student_id) || empty($email) || empty($password) || empty($confirm_password)) {
         $error = 'All fields are required';
     } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -28,64 +32,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else if ($password !== $confirm_password) {
         $error = 'Passwords do not match';
     } else {
-        // Sanitize inputs
-        $fullname = $conn->real_escape_string($fullname);
-        $student_id = $conn->real_escape_string($student_id);
-        $email = $conn->real_escape_string($email);
-        $university = $conn->real_escape_string($university);
-        
-        // Check if email already exists
-        $check_email = "SELECT user_id FROM users WHERE email = '$email' LIMIT 1";
-        $email_result = $conn->query($check_email);
-        
-        if ($email_result && $email_result->num_rows > 0) {
+
+        if (emailExists($conn, $email)) {
             $error = 'Email already registered. Please login instead.';
+        } else if (studentIdExists($conn, $student_id)) {
+
+            $error = 'Student ID already registered. Please login instead.';
         } else {
-            // Check if student_id already exists
-            $check_student = "SELECT user_id FROM users WHERE student_id = '$student_id' LIMIT 1";
-            $student_result = $conn->query($check_student);
+
+            $userId = registerUser($conn, $student_id, $fullname, $email, $university, $password);
             
-            if ($student_result && $student_result->num_rows > 0) {
-                $error = 'Student ID already registered. Please login instead.';
+            if ($userId) {
+                $success = 'Registration successful! Your account is pending admin approval. You will receive an email once approved.';
+
+                $fullname = '';
+                $student_id = '';
+                $email = '';
+                $university = '';
+                $password = '';
+                $confirm_password = '';
             } else {
-                // Hash password
-                $password_hash = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
-                
-                // Insert user into database
-                $insert_query = "INSERT INTO users (student_id, name, email, password_hash, user_type, university, account_status) 
-                                VALUES ('$student_id', '$fullname', '$email', '$password_hash', 'student', '$university', 'pending')";
-                
-                if ($conn->query($insert_query)) {
-                    $success = 'Registration successful! Your account is pending admin approval. You will receive an email once approved.';
-                    // Clear form fields after successful registration
-                    $fullname = '';
-                    $student_id = '';
-                    $email = '';
-                    $university = '';
-                    $password = '';
-                    $confirm_password = '';
-                } else {
-                    $error = 'Registration failed. Please try again. Error: ' . $conn->error;
-                }
+                $error = 'Registration failed. Please try again.';
             }
         }
     }
 }
 
-// Check if user is already logged in
-if (isset($_SESSION['user_id'])) {
-    if ($_SESSION['user_type'] === 'admin') {
-        header('Location: ../View/admin-dashboard.html');
-    } else if ($_SESSION['user_type'] === 'moderator') {
-        header('Location: ../View/moderator-dashboard.html');
-    } else {
-        header('Location: ../View/user-dashboard.html');
-    }
-    exit;
-}
-
-// Close database connection (but keep it open for the HTML display)
-// $conn->close();
 ?>
 
 <!doctype html>
@@ -110,7 +82,7 @@ if (isset($_SESSION['user_id'])) {
 
 <body>
 
-  <!-- Header -->
+
   <div id="header-placeholder"></div>
   <script>
     fetch("../View/header.html")
@@ -156,7 +128,7 @@ if (isset($_SESSION['user_id'])) {
             </div>
           <?php endif; ?>
 
-          <!-- Display success message -->
+
           <?php if (!empty($success)): ?>
             <div class="alert alert-success" style="margin-bottom: 20px; padding: 12px; background-color: #efe; border: 1px solid #cfc; border-radius: 4px; color: #3c3;">
               <strong>Success:</strong> <?php echo htmlspecialchars($success); ?>
@@ -243,7 +215,7 @@ if (isset($_SESSION['user_id'])) {
     </section>
   </main>
 
-  <!-- Footer -->
+
   <div id="footer-placeholder"></div>
   <script>
     fetch("../View/footer.html")
@@ -271,8 +243,6 @@ if (isset($_SESSION['user_id'])) {
         window.scrollTo({ top: 0, behavior: "smooth" });
       });
     }
-
-    // Password visibility toggle for password field
     const passwordInput = document.getElementById("passwordInput");
     const passwordToggle = document.getElementById("passwordToggle");
 
@@ -297,7 +267,7 @@ if (isset($_SESSION['user_id'])) {
       });
     }
 
-    // Password visibility toggle for confirm password field
+
     const confirmPasswordInput = document.getElementById("confirmPasswordInput");
     const confirmPasswordToggle = document.getElementById("confirmPasswordToggle");
 

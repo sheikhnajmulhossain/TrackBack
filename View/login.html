@@ -21,7 +21,7 @@
 
 <body>
 
-  <!-- Header -->
+  
   <div id="header-placeholder"></div>
   <script>
     fetch("header.html")
@@ -61,21 +61,23 @@
           <h2 class="auth-card__title">Login to your account</h2>
           <p class="auth-card__subtitle">Enter your credentials to continue</p>
 
-          <form class="auth-form" action="login.php" method="post">
+          
+          <div id="loginMessage" style="display: none; margin-bottom: 20px; padding: 12px; border-radius: 4px;"></div>
+
+          <form class="auth-form" id="loginForm">
 
             <div class="form-field">
               <label>Email</label>
-              <input type="email" name="email" placeholder="name@student.aiub.edu" required>
+              <input type="email" name="email" id="emailInput" placeholder="name@student.aiub.edu" required>
             </div>
 
             <div class="form-field">
               <div class="form-field__row">
                 <label>Password</label>
-                <a href="#" class="form-link">Forgot password?</a>
               </div>
               <div class="password-input-wrapper">
                 <input type="password" id="passwordInput" name="password" placeholder="Enter your password" required>
-                <button type="button" class="password-toggle" id="passwordToggle" onclick="togglePasswordVisibility()">
+                <button type="button" class="password-toggle" id="passwordToggle">
                   <i class="fas fa-eye"></i>
                 </button>
               </div>
@@ -83,12 +85,12 @@
 
             <div class="form-field form-field--inline">
               <label class="checkbox">
-                <input type="checkbox" name="remember">
+                <input type="checkbox" name="remember" id="rememberCheckbox">
                 <span>Keep me signed in</span>
               </label>
             </div>
 
-            <button type="submit" class="btn btn--green btn--pill auth-form__btn">
+            <button type="submit" class="btn btn--green btn--pill auth-form__btn" id="loginBtn">
               Login
             </button>
 
@@ -111,7 +113,7 @@
     </section>
   </main>
 
-  <!-- Footer -->
+  
   <div id="footer-placeholder"></div>
   <script>
     fetch("footer.html")
@@ -140,19 +142,113 @@
     }
 
     // Password visibility toggle
-    function togglePasswordVisibility() {
-      const passwordInput = document.getElementById("passwordInput");
-      const passwordToggle = document.getElementById("passwordToggle");
-      
-      if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-        passwordToggle.innerHTML = '<i class="fas fa-eye-slash"></i>';
+    const passwordInput = document.getElementById("passwordInput");
+    const passwordToggle = document.getElementById("passwordToggle");
+
+    if (passwordToggle && passwordInput) {
+      passwordToggle.addEventListener("click", function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const icon = this.querySelector("i");
+        
+        if (passwordInput.type === "password") {
+          passwordInput.type = "text";
+          icon.classList.remove("fa-eye");
+          icon.classList.add("fa-eye-slash");
+          this.classList.add("active");
+        } else {
+          passwordInput.type = "password";
+          icon.classList.remove("fa-eye-slash");
+          icon.classList.add("fa-eye");
+          this.classList.remove("active");
+        }
+      });
+    }
+
+    // Login form handler
+    const loginForm = document.getElementById("loginForm");
+    const loginMessage = document.getElementById("loginMessage");
+    const loginBtn = document.getElementById("loginBtn");
+
+    function showMessage(message, isError = true) {
+      loginMessage.style.display = "block";
+      loginMessage.textContent = message;
+      if (isError) {
+        loginMessage.style.backgroundColor = "#fee";
+        loginMessage.style.border = "1px solid #fcc";
+        loginMessage.style.color = "#c33";
       } else {
-        passwordInput.type = "password";
-        passwordToggle.innerHTML = '<i class="fas fa-eye"></i>';
+        loginMessage.style.backgroundColor = "#efe";
+        loginMessage.style.border = "1px solid #cfc";
+        loginMessage.style.color = "#3c3";
       }
     }
-  </script>
+
+    function hideMessage() {
+      loginMessage.style.display = "none";
+    }
+
+    if (loginForm) {
+      loginForm.addEventListener("submit", async function(e) {
+        e.preventDefault();
+        hideMessage();
+        
+        const email = document.getElementById("emailInput").value.trim();
+        const password = document.getElementById("passwordInput").value;
+        const remember = document.getElementById("rememberCheckbox").checked;
+        
+        // Validate
+        if (!email || !password) {
+          showMessage("Email and password are required");
+          return;
+        }
+        
+        // Disable button while processing
+        loginBtn.disabled = true;
+        loginBtn.textContent = "Logging in...";
+        
+        try {
+          const formData = new FormData();
+          formData.append("action", "login");
+          formData.append("email", email);
+          formData.append("password", password);
+          formData.append("remember", remember ? "1" : "0");
+          
+          const response = await fetch("../Controller/auth_api.php", {
+            method: "POST",
+            credentials: 'include',
+            body: formData
+          });
+          
+          const data = await response.json();
+          
+          if (data.success) {
+            showMessage("Login successful! Redirecting...", false);
+            // Redirect based on user type
+            const userType = data.data?.user_type || data.user_type;
+            setTimeout(() => {
+              if (userType === "admin") {
+                window.location.href = "admin-dashboard.html";
+              } else if (userType === "moderator") {
+                window.location.href = "moderator-dashboard.html";
+              } else {
+                window.location.href = "user-dashboard.html";
+              }
+            }, 500);
+          } else {
+            showMessage(data.message || "Login failed. Please try again.");
+            loginBtn.disabled = false;
+            loginBtn.textContent = "Login";
+          }
+        } catch (error) {
+          console.error("Login error:", error);
+          showMessage("An error occurred. Please try again.");
+          loginBtn.disabled = false;
+          loginBtn.textContent = "Login";
+        }
+      });
+    }
   </script>
 
 </body>
