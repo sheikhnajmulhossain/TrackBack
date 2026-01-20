@@ -22,6 +22,7 @@ if (!in_array($action, $publicActions)) {
     validateSession();
 }
 
+
 function clearSessionAndCookies() {
     $_SESSION = [];
 
