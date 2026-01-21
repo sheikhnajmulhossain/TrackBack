@@ -101,16 +101,34 @@ switch ($action) {
 - **warnings**: user_id (tracks violations), removed_at (NULL if active)
 - **audit_logs**: auto-created on first log action, tracks all admin/moderator actions
 
-## Development Notes
-- PHP error logging enabled (check browser console network tab for JSON responses)
-- Direct SQL in most functions (injection risks mitigated by sanitization + type casting)
-- No framework (no ORM, routing, validation middleware) — manual CORS headers, session management
-- Images stored in `View/img/` subdirectories; clients fetch from relative paths
-- Dashboard JS files (~1300 lines) handle UI state management with global `postsData`, `messagesData` arrays
+## Routing & Entry Points
+- **SPA via Server-Side Rendering**: `index.php` reads and serves `index.html` as the entry point
+- Static files (`index.html`, `login.html`, `registration.html`) in root are served directly
+- All API requests route to `Controller/*.php?action=` endpoints
+- `.htaccess` rewrites non-existent files to `index.html` (SPA fallback)
 
-## When Modifying
-- Always escape user input via `sanitizeInput()` or prepared statements
-- Cast numeric IDs to `(int)` before SQL queries
-- Check role requirements using `validateSession()` before DB queries
-- Return JSON responses via `sendSuccess()` or `sendError()` (never echo plain HTML in APIs)
-- Update [Model/functions.php](Model/functions.php) for shared logic; API-specific logic stays in controllers
+## Development & Debugging Notes
+- PHP error logging enabled in all files via `error_reporting(E_ALL)`; check browser DevTools Network tab for JSON responses
+- Direct SQL in most functions; injection risks mitigated by `sanitizeInput()` + `(int)` casting
+- No framework (no ORM, routing, validation middleware) — manual CORS headers via `setCorsHeaders()`, session management
+- Image uploads: `uploadImage($file, $folder)` stores in `View/img/{folder}/` with timestamped filenames; returns relative path
+- Note: `img/` folder (root) appears unused; all image references use `View/img/` paths
+- Dashboard JS files (~1300 lines) manage state with global `postsData`, `messagesData` arrays; no state library
+- Session cookies are HTTPOnly, same-site, with 24-hour expiry (86400s)
+
+## Critical Implementation Checklist
+When adding features or modifying behavior:
+- **Security**: Always escape via `sanitizeInput()` or prepared statements; cast numeric IDs to `(int)` before SQL
+- **Auth**: Call `validateSession($role)` at top of protected controllers (before DB queries)
+- **API Responses**: Use only `sendSuccess($data, $message)` or `sendError($message, $code)` in controllers (auto-exits)
+- **Shared Logic**: Place in [Model/functions.php](Model/functions.php); API-specific stays in Controller files
+- **Database Changes**: Modify `CREATE TABLE` in [Model/database.php](Model/database.php) (only affects new installs); update CRUD in [Model/functions.php](Model/functions.php)
+- **Frontend**: Use `fetchAPI()` wrapper (auto-includes credentials); expect `{success, message, data}` structure
+- **Images**: Call `uploadImage($file, 'folder_name')` which returns relative path; allowed: jpeg, png, gif, webp; max 5MB
+
+## Common Pitfalls
+- Calling `sendSuccess()` or `sendError()` multiple times in same request (exits on first call)
+- Forgetting to cast `$_SESSION['user_id']` or `$_POST['id']` to `(int)` before SQL concatenation
+- Mixing direct SQL concatenation with prepared statements (maintain consistency within a function)
+- Not checking role with `validateSession()` — returns 403 Forbidden if role mismatch
+- Returning HTML from API endpoints (always use JSON via response helpers)
