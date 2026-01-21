@@ -24,7 +24,7 @@ if ($result['success']) {
 }
 
 echo "<br><br><p style='color: red; font-weight: bold;'>⚠️ DELETE THIS FILE (reset_admin.php) AFTER USE FOR SECURITY!</p>";
-echo "<p><a href='../View/login.html'>Go to Login Page</a></p>";
+echo "<p><a href='../login.html'>Go to Login Page</a></p>";
 
 $conn->close();
 ?>

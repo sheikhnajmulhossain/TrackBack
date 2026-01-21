@@ -23,14 +23,14 @@ async function checkAdminStatus() {
 
     if (!response.ok || !data.success) {
       alert(data.message || 'Your session has expired or you do not have admin access. Please login again.');
-      window.location.href = '../Controller/login.php';
+      window.location.href = '../login.html';
       return false;
     }
 
     return true;
   } catch (error) {
     alert('Unable to verify your session. Please login again.');
-    window.location.href = '../Controller/login.php';
+    window.location.href = '../login.html';
     return false;
   }
 }
@@ -1433,11 +1433,11 @@ function handleLogout() {
   })
   .then(res => res.json())
   .then(() => {
-    window.location.href = './index.html';
+    window.location.href = '../index.html';
   })
   .catch(err => {
     console.error('Logout error:', err);
-    window.location.href = './index.html';
+    window.location.href = '../index.html';
   });
 }
 

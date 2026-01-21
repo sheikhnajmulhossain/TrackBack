@@ -97,7 +97,7 @@ if (isset($_SESSION['user_id'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login - TrackBack</title>
 
-  <link rel="icon" href="../View/img/logo/favicon-circle.png" type="image/png" />
+  <link rel="icon" href="../img/logo/favicon-circle.png" type="image/png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -107,7 +107,7 @@ if (isset($_SESSION['user_id'])) {
     href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
     rel="stylesheet" />
 
-  <link rel="stylesheet" href="../View/index.css" />
+  <link rel="stylesheet" href="../index.css" />
 </head>
 
 <body>
@@ -115,7 +115,7 @@ if (isset($_SESSION['user_id'])) {
   
   <div id="header-placeholder"></div>
   <script>
-    fetch("../View/header.html")
+    fetch("../header.html")
       .then(res => res.text())
       .then(data => {
         document.getElementById("header-placeholder").innerHTML = data;
@@ -198,15 +198,15 @@ if (isset($_SESSION['user_id'])) {
 
             <p class="auth-form__footer">
               Don't have an account?
-              <a href="../View/registration.html" class="form-link">Sign up now</a>
+              <a href="../registration.html" class="form-link">Sign up now</a>
             </p>
           </form>
 
           <div class="auth-card__meta">
             <small>
               By continuing, you agree to TrackBack's
-              <a href="../View/terms.html">Terms</a> and
-              <a href="../View/privacy.html">Privacy Policy</a>.
+              <a href="../terms.html">Terms</a> and
+              <a href="../privacy.html">Privacy Policy</a>.
             </small>
           </div>
         </div>
@@ -218,7 +218,7 @@ if (isset($_SESSION['user_id'])) {
   
   <div id="footer-placeholder"></div>
   <script>
-    fetch("../View/footer.html")
+    fetch("../footer.html")
       .then(res => res.text())
       .then(data => {
         document.getElementById("footer-placeholder").innerHTML = data;

@@ -18,8 +18,8 @@ function handleLogoutModerator() {
     credentials: 'include'
   })
   .then(res => res.json())
-  .then(() => window.location.href = './index.html')
-  .catch(() => window.location.href = './index.html');
+  .then(() => window.location.href = '../index.html')
+  .catch(() => window.location.href = '../index.html');
 }
 
 const modLogoutBtn = document.getElementById('logoutBtn');
@@ -35,7 +35,7 @@ async function checkModeratorStatus() {
     
     if (!response.ok || !data.success) {
       alert(data.message || 'Your session has expired or you do not have moderator access. Please login again.');
-      window.location.href = '../Controller/login.php';
+      window.location.href = '../login.html';
       return false;
     }
     
@@ -43,7 +43,7 @@ async function checkModeratorStatus() {
   } catch (error) {
     console.error('Status check error:', error);
     alert('Unable to verify your session. Please login again.');
-    window.location.href = '../Controller/login.php';
+    window.location.href = '../login.html';
     return false;
   }
 }

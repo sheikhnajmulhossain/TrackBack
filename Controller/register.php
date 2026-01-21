@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Create Account - TrackBack</title>
 
-  <link rel="icon" href="../View/img/logo/favicon-circle.png" type="image/png" />
+  <link rel="icon" href="../img/logo/favicon-circle.png" type="image/png" />
 
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
     rel="stylesheet" />
 
-  <link rel="stylesheet" href="../View/index.css" />
+  <link rel="stylesheet" href="../index.css" />
 </head>
 
 <body>
@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   <div id="header-placeholder"></div>
   <script>
-    fetch("../View/header.html")
+    fetch("../header.html")
       .then(res => res.text())
       .then(data => {
         document.getElementById("header-placeholder").innerHTML = data;
@@ -193,9 +193,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="checkbox" name="agree" required>
                 <span>
                   I agree to the
-                  <a href="../View/terms.html" class="form-link">Terms Of Service</a>
+                  <a href="../terms.html" class="form-link">Terms Of Service</a>
                   &
-                  <a href="../View/privacy.html" class="form-link">Privacy Policy</a>
+                  <a href="../privacy.html" class="form-link">Privacy Policy</a>
                 </span>
               </label>
             </div>
@@ -219,7 +219,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   <div id="footer-placeholder"></div>
   <script>
-    fetch("../View/footer.html")
+    fetch("../footer.html")
       .then(res => res.text())
       .then(data => {
         document.getElementById("footer-placeholder").innerHTML = data;

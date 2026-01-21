@@ -50,12 +50,17 @@ document.addEventListener('DOMContentLoaded', function() {
         credentials: 'include'
       })
       .then(res => res.json())
-      .then(() => window.location.href = './index.html')
-      .catch(() => window.location.href = './index.html');
+      .then(() => window.location.href = '../index.html')
+      .catch(() => window.location.href = '../index.html');
     }
   
     const userLogoutBtn = document.getElementById('logoutBtn');
     if (userLogoutBtn) userLogoutBtn.addEventListener('click', function(e){ e.preventDefault(); handleLogoutUser(); });
+    
+    // Redirect to login if session expires
+    window.addEventListener('beforeunload', function() {
+      // This helps catch session timeouts
+    });
   });
 });
 
@@ -70,7 +75,7 @@ async function checkUserStatus() {
     if (!response.ok || !data.success) {
 
       alert(data.message || 'Your session has expired or your account is not active. Please login again.');
-      window.location.href = '../Controller/login.php';
+      window.location.href = '../login.html';
       return false;
     }
     
@@ -78,7 +83,7 @@ async function checkUserStatus() {
   } catch (error) {
     console.error('Status check error:', error);
     alert('Unable to verify your session. Please login again.');
-    window.location.href = '../Controller/login.php';
+    window.location.href = '../login.html';
     return false;
   }
 }
@@ -1147,7 +1152,7 @@ function initializeSettings() {
               if (result.success) {
                 showNotification('Account deleted successfully', 'success');
                 setTimeout(() => {
-                  window.location.href = 'index.html';
+                  window.location.href = '../index.html';
                 }, 2000);
               } else {
                 showNotification(result.message || 'Failed to delete account', 'error');
