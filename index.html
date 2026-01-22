@@ -287,12 +287,16 @@
       </div>
     </section>
   </main>
-
   
+<div id="footer-placeholder"></div>
 
-
-
-
+<script>
+  fetch("View/footer.html")
+    .then(res => res.text())
+    .then(data => {
+      document.getElementById("footer-placeholder").innerHTML = data;
+    });
+</script>
 
   
   <button id="backToTop" class="back-to-top" aria-label="Back to top">
