@@ -1050,3 +1050,136 @@ details[open] summary::after{ content:"–"; }
   visibility: visible;
   transform: translateY(0);
 }
+
+/* ✅ Base responsive safety */
+* { box-sizing: border-box; }
+img { max-width: 100%; height: auto; }
+.container { width: min(1100px, 92%); margin: 0 auto; }
+
+/* ✅ Header layout */
+.topbar,
+.navbar {
+  width: 100%;
+}
+
+/* Example: your header inner wrapper */
+.topbar__inner,
+.nav__inner,
+.header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap; /* ✅ allows wrap on small screens */
+}
+
+/* Logo */
+.brand,
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 160px;
+}
+.brand img,
+.logo img {
+  max-height: 46px;
+  width: auto;
+}
+
+/* Buttons area */
+.nav-actions,
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Make buttons not too huge */
+.nav-actions a,
+.header-actions a,
+.nav-actions button,
+.header-actions button {
+  padding: 10px 14px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+/* Social icons row */
+.social,
+.social-icons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* ✅ Hero responsive text */
+.hero h1 {
+  line-height: 1.05;
+  word-break: break-word;
+}
+.hero p {
+  line-height: 1.6;
+}
+
+/* =========================
+   ✅ PHONE (<= 768px)
+   ========================= */
+@media (max-width: 768px) {
+  .topbar__inner,
+  .nav__inner,
+  .header__inner {
+    justify-content: center;   /* center everything */
+  }
+
+  /* Put logo on its own line */
+  .brand,
+  .logo {
+    justify-content: center;
+    width: 100%;
+  }
+  .brand img,
+  .logo img {
+    max-height: 40px;
+  }
+
+  /* Put buttons in a centered row */
+  .nav-actions,
+  .header-actions {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Social icons smaller */
+  .social a,
+  .social-icons a {
+    font-size: 18px;
+  }
+
+  /* Hero text scales */
+  .hero h1 { font-size: clamp(28px, 8vw, 42px); }
+  .hero p  { font-size: 15px; }
+}
+
+/* =========================
+   ✅ SMALL PHONE (<= 420px)
+   ========================= */
+@media (max-width: 420px) {
+  /* Stack buttons if needed */
+  .nav-actions,
+  .header-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .nav-actions a,
+  .header-actions a,
+  .nav-actions button,
+  .header-actions button {
+    width: 100%;
+    text-align: center;
+    max-width: 260px;
+  }
+}
