@@ -1051,31 +1051,3 @@ details[open] summary::after{ content:"–"; }
   transform: translateY(0);
 }
 
-@media (max-width: 768px){
-  /* force 1-column hero */
-  .container.hero__grid{
-    display: grid !important;
-    grid-template-columns: 1fr !important;
-    gap: 18px !important;
-  }
-
-  .hero__title{
-    font-size: 40px !important;
-    line-height: 1.05 !important;
-  }
-
-  .hero__cta{
-    display:flex !important;
-    flex-wrap:wrap !important;
-    gap:10px !important;
-  }
-
-  .uni-row{
-    grid-template-columns: 1fr 1fr !important;
-    gap:10px !important;
-  }
-}
-
-@media (max-width: 420px){
-  .uni-row{ grid-template-columns: 1fr !important; }
-}
