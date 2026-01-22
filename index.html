@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,29 +9,58 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
   <link
     href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
     rel="stylesheet" />
 
   <link rel="stylesheet" href="./index.css" />
+
+  <script defer>
+    async function loadPartial(url, targetId) {
+      const el = document.getElementById(targetId);
+      if (!el) return;
+
+      try {
+        const res = await fetch(url, { cache: "no-cache" });
+        if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+        const html = await res.text();
+        el.innerHTML = html;
+      } catch (err) {
+        console.error(`Failed to load ${url}:`, err);
+        // Keep the page clean even if header/footer fails
+        el.innerHTML = "";
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      loadPartial("View/header.html", "header-placeholder");
+      loadPartial("View/footer.html", "footer-placeholder");
+
+      const backToTop = document.getElementById("backToTop");
+      const toggleBackToTop = () => {
+        if (!backToTop) return;
+        if (window.scrollY > 300) backToTop.classList.add("show");
+        else backToTop.classList.remove("show");
+      };
+
+      window.addEventListener("scroll", toggleBackToTop);
+      toggleBackToTop();
+
+      if (backToTop) {
+        backToTop.addEventListener("click", () => {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+      }
+    });
+  </script>
 </head>
 
 <body>
-
   <div id="header-placeholder"></div>
 
-<script>
-  fetch("View/header.html")
-    .then(res => res.text())
-    .then(data => document.getElementById("header-placeholder").innerHTML = data);
-
-</script>
-
   <main>
-    
     <section class="hero">
       <div class="container hero__grid">
         <div class="hero__left">
@@ -105,7 +133,6 @@
       </div>
     </section>
 
-    
     <section class="band band--blue" id="features">
       <div class="container band__grid">
         <div>
@@ -133,7 +160,6 @@
       </div>
     </section>
 
-    
     <section class="newsletter-strip">
       <div class="container newsletter-strip__inner">
         <div class="newsletter-strip__text">
@@ -148,7 +174,6 @@
       </div>
     </section>
 
-    
     <section class="section" id="support">
       <div class="container">
         <h2 class="section__title">How can we help you?</h2>
@@ -166,7 +191,6 @@
       </div>
     </section>
 
-    
     <section class="section section--muted">
       <div class="container">
         <h2 class="section__title">Become our Partner</h2>
@@ -208,7 +232,7 @@
             <a class="btn btn--outline-green btn--pill" href="https://unbam.com" target="_blank" rel="noopener">View Website</a>
           </article>
 
-          <article class="sponsor-card"> 
+          <article class="sponsor-card">
             <div class="sponsor-card__logo">ToolRules</div>
             <p>
               ToolRules is our license partner, providing secure, reliable, and compliant licensing
@@ -226,7 +250,6 @@
       </div>
     </section>
 
-    
     <section class="section">
       <div class="container">
         <h2 class="section__title">Few Frequently Asked Questions</h2>
@@ -274,7 +297,6 @@
       </div>
     </section>
 
-    
     <section class="newsletter-strip">
       <div class="container newsletter-strip__inner">
         <div class="newsletter-strip__text">
@@ -290,39 +312,10 @@
     </section>
   </main>
 
-<div id="footer-placeholder"></div>
+  <div id="footer-placeholder"></div>
 
-<script>
-  fetch("View/footer.html")
-    .then(res => res.text())
-    .then(data => {
-      document.getElementById("footer-placeholder").innerHTML = data;
-    });
-</script>
-
-  
   <button id="backToTop" class="back-to-top" aria-label="Back to top">
     <i class="fa-solid fa-arrow-up"></i>
   </button>
-
-  <script>
-    const backToTop = document.getElementById("backToTop");
-
-    function toggleBackToTop() {
-      if (!backToTop) return;
-      if (window.scrollY > 300) backToTop.classList.add("show");
-      else backToTop.classList.remove("show");
-    }
-
-    window.addEventListener("scroll", toggleBackToTop);
-    toggleBackToTop();
-
-    if (backToTop) {
-      backToTop.addEventListener("click", () => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      });
-    }
-  </script>
-
 </body>
 </html>
