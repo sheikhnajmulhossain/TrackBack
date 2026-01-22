@@ -7,4 +7,3 @@ if (file_exists('index.html')) {
     echo "index.html not found";
 }
 ?>
-<?php $SEO_PAGE = 'home'; include __DIR__ . '/seo.php'; ?>
