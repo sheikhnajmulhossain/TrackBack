@@ -1,5 +1,5 @@
 <?php
-$BASE_URL = 'https://trackback.top';
+$BASE_URL = 'https://trackback.dev';
 
 function current_url($base) {
   $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http";
