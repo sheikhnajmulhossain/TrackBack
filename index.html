@@ -5,54 +5,49 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TrackBack - Student Lost &amp; Found Platform</title>
 
-  <link rel="icon" href="img/logo/favicon-circle.png" type="image/png" />
+  <link rel="icon" href="/img/logo/favicon-circle.png" type="image/png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-
   <link
     href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
     rel="stylesheet" />
 
-  <link rel="stylesheet" href="./index.css" />
+  <link rel="stylesheet" href="/index.css" />
 
-  <script defer>
+  <script>
     async function loadPartial(url, targetId) {
       const el = document.getElementById(targetId);
       if (!el) return;
 
       try {
-        const res = await fetch(url, { cache: "no-cache" });
+        const res = await fetch(url, { cache: "no-store" });
         if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-        const html = await res.text();
-        el.innerHTML = html;
+        el.innerHTML = await res.text();
       } catch (err) {
-        console.error(`Failed to load ${url}:`, err);
-        // Keep the page clean even if header/footer fails
+        console.error("Partial load failed:", url, err);
         el.innerHTML = "";
       }
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-      loadPartial("View/header.html", "header-placeholder");
-      loadPartial("View/footer.html", "footer-placeholder");
+      loadPartial("/View/header.html", "header-placeholder");
+      loadPartial("/View/footer.html", "footer-placeholder");
 
       const backToTop = document.getElementById("backToTop");
-      const toggleBackToTop = () => {
+      const toggle = () => {
         if (!backToTop) return;
         if (window.scrollY > 300) backToTop.classList.add("show");
         else backToTop.classList.remove("show");
       };
 
-      window.addEventListener("scroll", toggleBackToTop);
-      toggleBackToTop();
+      window.addEventListener("scroll", toggle);
+      toggle();
 
-      if (backToTop) {
-        backToTop.addEventListener("click", () => {
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        });
-      }
+      backToTop?.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
     });
   </script>
 </head>
@@ -82,31 +77,31 @@
           </p>
 
           <div class="hero__cta">
-            <a class="btn btn--green btn--pill" href="#">Learn More</a>
-            <a class="btn btn--outline-green btn--pill" href="View/login.html">Lost &amp; Found Area</a>
+            <a class="btn btn--green btn--pill" href="#features">Learn More</a>
+            <a class="btn btn--outline-green btn--pill" href="/View/login.html">Lost &amp; Found Area</a>
           </div>
 
           <div class="uni-row">
-            <button class="pill pill--green">I’m a Student of AIUB</button>
-            <button class="pill pill--blue">I’m a Student of NSU</button>
-            <button class="pill pill--green">I’m a Student of DU</button>
-            <button class="pill pill--blue">I’m a Student of BRAC</button>
+            <button class="pill pill--green" type="button">I’m a Student of AIUB</button>
+            <button class="pill pill--blue" type="button">I’m a Student of NSU</button>
+            <button class="pill pill--green" type="button">I’m a Student of DU</button>
+            <button class="pill pill--blue" type="button">I’m a Student of BRAC</button>
           </div>
         </div>
 
         <div class="hero__right">
           <div class="hero-cards">
             <article class="media-card media-card--tall">
-              <img src="./img/other/hero-1.jpg" alt="TrackBack demo" />
+              <img src="/img/other/hero-1.jpg" alt="TrackBack demo" />
             </article>
 
             <div class="hero-cards__stack">
               <article class="media-card">
-                <img src="./img/other/hero-2.png" alt="Found items list" />
+                <img src="/img/other/hero-2.png" alt="Found items list" />
               </article>
 
               <article class="media-card">
-                <img src="./img/other/hero-3.png" alt="Campus support" />
+                <img src="/img/other/hero-3.png" alt="Campus support" />
               </article>
             </div>
           </div>
@@ -143,8 +138,8 @@
             secure system.
           </p>
           <div class="band__cta">
-            <a class="btn btn--white btn--pill" href="#">About Us</a>
-            <a class="btn btn--outline-white btn--pill" href="#">Check Latest Updates</a>
+            <a class="btn btn--white btn--pill" href="#contact">About Us</a>
+            <a class="btn btn--outline-white btn--pill" href="#support">Check Latest Updates</a>
           </div>
         </div>
 
@@ -154,7 +149,7 @@
             <div class="mini-card__text">
               Sign in to your account or create a new one to get started.
             </div>
-            <a class="btn btn--white btn--pill mini-card__btn" href="View/login.html">Sign in</a>
+            <a class="btn btn--white btn--pill mini-card__btn" href="/View/login.html">Sign in</a>
           </div>
         </div>
       </div>
@@ -179,14 +174,14 @@
         <h2 class="section__title">How can we help you?</h2>
 
         <div class="help-grid">
-          <a class="help-item" href="./View/login.html"><span class="help-ico">👤</span><span>Sign in to your Account</span></a>
+          <a class="help-item" href="/View/login.html"><span class="help-ico">👤</span><span>Sign in to your Account</span></a>
           <a class="help-item" href="#"><span class="help-ico">💳</span><span>Help us by donating</span></a>
-          <a class="help-item" href="#"><span class="help-ico">📦</span><span>Lost &amp; Found Area</span></a>
-          <a class="help-item" href="#"><span class="help-ico">📅</span><span>Schedule a meeting with us</span></a>
+          <a class="help-item" href="/View/login.html"><span class="help-ico">📦</span><span>Lost &amp; Found Area</span></a>
+          <a class="help-item" href="#contact"><span class="help-ico">📅</span><span>Schedule a meeting with us</span></a>
           <a class="help-item" href="#"><span class="help-ico">🔎</span><span>Search for a user</span></a>
           <a class="help-item" href="#"><span class="help-ico">❓</span><span>Q&amp;A Knowledgebase</span></a>
-          <a class="help-item" href="#"><span class="help-ico">ℹ️</span><span>Learn more about us</span></a>
-          <a class="help-item" href="./registration.html"><span class="help-ico">📝</span><span>Create an account</span></a>
+          <a class="help-item" href="#features"><span class="help-ico">ℹ️</span><span>Learn more about us</span></a>
+          <a class="help-item" href="/View/registration.html"><span class="help-ico">📝</span><span>Create an account</span></a>
         </div>
       </div>
     </section>
@@ -244,7 +239,7 @@
           <article class="sponsor-card sponsor-card--cta">
             <h3>Become our partner</h3>
             <p>Support students and community impact through TrackBack.</p>
-            <a class="btn btn--green btn--pill" href="#">Learn More</a>
+            <a class="btn btn--green btn--pill" href="#contact">Learn More</a>
           </article>
         </div>
       </div>
@@ -297,17 +292,11 @@
       </div>
     </section>
 
-    <section class="newsletter-strip">
-      <div class="container newsletter-strip__inner">
-        <div class="newsletter-strip__text">
-          <h3>Subscribe to our Newsletter</h3>
-          <p>Get latest updates directly into your email</p>
-        </div>
-
-        <form class="newsletter-strip__form" action="#" method="post">
-          <input type="email" placeholder="Enter your Email" required />
-          <button class="btn btn--green" type="submit">Subscribe</button>
-        </form>
+    <!-- ✅ keep a real contact anchor so header link doesn't break -->
+    <section class="section" id="contact">
+      <div class="container">
+        <h2 class="section__title">Contact</h2>
+        <p class="section__sub">Reach out to us for support, partnerships, or suggestions.</p>
       </div>
     </section>
   </main>

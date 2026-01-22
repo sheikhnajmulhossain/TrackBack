@@ -5,28 +5,43 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login - TrackBack</title>
 
-  <link rel="icon" href="../img/logo/favicon-circle.png" type="image/png" />
+  <link rel="icon" href="/img/logo/favicon-circle.png" type="image/png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <link
     href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="../index.css" />
+  <link rel="stylesheet" href="/index.css" />
+
+  <script>
+    async function loadPartial(url, targetId) {
+      const el = document.getElementById(targetId);
+      if (!el) return;
+
+      try {
+        const res = await fetch(url, { cache: "no-store" });
+        if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+        el.innerHTML = await res.text();
+      } catch (err) {
+        console.error("Partial load failed:", url, err);
+        el.innerHTML = "";
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      loadPartial("/View/header.html", "header-placeholder");
+      loadPartial("/View/footer.html", "footer-placeholder");
+    });
+  </script>
 </head>
 
 <body>
   <div id="header-placeholder"></div>
-  <script>
-    fetch("../header.html")
-      .then(res => res.text())
-      .then(html => { document.getElementById("header-placeholder").innerHTML = html; });
-  </script>
 
   <main>
     <section class="auth">
       <div class="container auth__grid">
-
         <div class="auth__info">
           <h1 class="auth__title">
             Welcome back to <span class="accent">TrackBack</span>
@@ -50,7 +65,7 @@
           <h2 class="auth-card__title">Login</h2>
           <p class="auth-card__subtitle">Enter your credentials to continue</p>
 
-          <div id="loginMessage" style="display:none;margin-bottom:20px;padding:12px;border-radius:4px;"></div>
+          <div id="loginMessage" style="display:none;margin-bottom:20px;padding:12px;border-radius:10px;"></div>
 
           <form class="auth-form" id="loginForm" novalidate>
             <div class="form-field">
@@ -61,9 +76,7 @@
             <div class="form-field">
               <div class="form-field__row">
                 <label for="passwordInput">Password</label>
-
-                <!-- ✅ Visible link + correct relative path (same folder as this file) -->
-                <a href="./forgot-password.html" class="form-link" style="text-decoration:underline;">
+                <a href="/View/forgot-password.html" class="form-link" style="text-decoration:underline;">
                   Forgot password?
                 </a>
               </div>
@@ -89,57 +102,52 @@
 
             <p class="auth-form__footer">
               Don't have an account?
-              <a href="./registration.html" class="form-link">Sign up now</a>
+              <a href="/View/registration.html" class="form-link">Sign up now</a>
             </p>
           </form>
 
           <div class="auth-card__meta">
             <small>
               By continuing, you agree to TrackBack’s
-              <a href="./terms.html">Terms</a> and
-              <a href="./privacy.html">Privacy Policy</a>.
+              <a href="/View/terms.html">Terms</a> and
+              <a href="/View/privacy.html">Privacy Policy</a>.
             </small>
           </div>
         </div>
-
       </div>
     </section>
   </main>
 
   <div id="footer-placeholder"></div>
-  <script>
-    fetch("../footer.html")
-      .then(res => res.text())
-      .then(html => { document.getElementById("footer-placeholder").innerHTML = html; });
-  </script>
+
+  <!-- ✅ include button so it never breaks -->
+  <button id="backToTop" class="back-to-top" aria-label="Back to top">
+    <i class="fa-solid fa-arrow-up"></i>
+  </button>
 
   <script>
     // Back to Top
     const backToTop = document.getElementById("backToTop");
-    function toggleBackToTop() {
+    const toggleBackToTop = () => {
       if (!backToTop) return;
       if (window.scrollY > 300) backToTop.classList.add("show");
       else backToTop.classList.remove("show");
-    }
-    if (backToTop) {
-      window.addEventListener("scroll", toggleBackToTop);
-      toggleBackToTop();
-      backToTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
-    }
+    };
+    window.addEventListener("scroll", toggleBackToTop);
+    toggleBackToTop();
+    backToTop?.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
 
     // Password toggle
     const passwordInput = document.getElementById("passwordInput");
     const passwordToggle = document.getElementById("passwordToggle");
-    if (passwordToggle && passwordInput) {
-      passwordToggle.addEventListener("click", (e) => {
-        e.preventDefault();
-        const icon = passwordToggle.querySelector("i");
-        const isHidden = passwordInput.type === "password";
-        passwordInput.type = isHidden ? "text" : "password";
-        icon.classList.toggle("fa-eye", !isHidden);
-        icon.classList.toggle("fa-eye-slash", isHidden);
-      });
-    }
+    passwordToggle?.addEventListener("click", (e) => {
+      e.preventDefault();
+      const icon = passwordToggle.querySelector("i");
+      const isHidden = passwordInput.type === "password";
+      passwordInput.type = isHidden ? "text" : "password";
+      icon.classList.toggle("fa-eye", !isHidden);
+      icon.classList.toggle("fa-eye-slash", isHidden);
+    });
 
     // Login submit
     const loginForm = document.getElementById("loginForm");
@@ -149,6 +157,7 @@
     function showMessage(message, isError = true) {
       loginMessage.style.display = "block";
       loginMessage.textContent = message;
+
       if (isError) {
         loginMessage.style.backgroundColor = "#fee";
         loginMessage.style.border = "1px solid #fcc";
@@ -156,66 +165,64 @@
       } else {
         loginMessage.style.backgroundColor = "#efe";
         loginMessage.style.border = "1px solid #cfc";
-        loginMessage.style.color = "#3c3";
+        loginMessage.style.color = "#2a7a2a";
       }
     }
     function hideMessage() { loginMessage.style.display = "none"; }
 
-    if (loginForm) {
-      loginForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        hideMessage();
+    loginForm?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      hideMessage();
 
-        const email = document.getElementById("emailInput").value.trim();
-        const password = document.getElementById("passwordInput").value;
-        const remember = document.getElementById("rememberCheckbox").checked;
+      const email = document.getElementById("emailInput").value.trim();
+      const password = document.getElementById("passwordInput").value;
+      const remember = document.getElementById("rememberCheckbox").checked;
 
-        if (!email || !password) {
-          showMessage("Email and password are required");
+      if (!email || !password) {
+        showMessage("Email and password are required");
+        return;
+      }
+
+      loginBtn.disabled = true;
+      const oldBtnText = loginBtn.textContent;
+      loginBtn.textContent = "Logging in...";
+
+      try {
+        const formData = new FormData();
+        formData.append("action", "login");
+        formData.append("email", email);
+        formData.append("password", password);
+        formData.append("remember", remember ? "1" : "0");
+
+        const res = await fetch("/Controller/auth_api.php", {
+          method: "POST",
+          credentials: "include",
+          body: formData
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          showMessage("Login successful! Redirecting...", false);
+          const userType = data.data?.user_type || data.user_type;
+
+          setTimeout(() => {
+            if (userType === "admin") window.location.href = "/View/admin-dashboard.html";
+            else if (userType === "moderator") window.location.href = "/View/moderator-dashboard.html";
+            else window.location.href = "/View/user-dashboard.html";
+          }, 500);
           return;
         }
 
-        loginBtn.disabled = true;
-        const oldBtnText = loginBtn.textContent;
-        loginBtn.textContent = "Logging in...";
-
-        try {
-          const formData = new FormData();
-          formData.append("action", "login");
-          formData.append("email", email);
-          formData.append("password", password);
-          formData.append("remember", remember ? "1" : "0");
-
-          const res = await fetch("../Controller/auth_api.php", {
-            method: "POST",
-            credentials: "include",
-            body: formData
-          });
-
-          const data = await res.json();
-
-          if (data.success) {
-            showMessage("Login successful! Redirecting...", false);
-            const userType = data.data?.user_type || data.user_type;
-
-            setTimeout(() => {
-              if (userType === "admin") window.location.href = "./admin-dashboard.html";
-              else if (userType === "moderator") window.location.href = "./moderator-dashboard.html";
-              else window.location.href = "./user-dashboard.html";
-            }, 500);
-            return;
-          }
-
-          showMessage(data.message || "Login failed. Please try again.");
-        } catch (err) {
-          console.error(err);
-          showMessage("An error occurred. Please try again.");
-        } finally {
-          loginBtn.disabled = false;
-          loginBtn.textContent = oldBtnText;
-        }
-      });
-    }
+        showMessage(data.message || "Login failed. Please try again.");
+      } catch (err) {
+        console.error(err);
+        showMessage("An error occurred. Please try again.");
+      } finally {
+        loginBtn.disabled = false;
+        loginBtn.textContent = oldBtnText;
+      }
+    });
   </script>
 </body>
 </html>
