@@ -1,12 +1,12 @@
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Create Account - TrackBack</title>
 
-  <link rel="icon" href="img/logo/favicon-circle.png" type="image/png" />
+  <!-- ✅ Always use root-absolute paths (works from any folder) -->
+  <link rel="icon" href="/img/logo/favicon-circle.png" type="image/png" />
 
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
@@ -15,19 +15,34 @@
     href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
     rel="stylesheet" />
 
-  <link rel="stylesheet" href="./index.css" />
+  <!-- ✅ correct css -->
+  <link rel="stylesheet" href="/index.css" />
+
+  <script>
+    async function loadPartial(url, targetId) {
+      const el = document.getElementById(targetId);
+      if (!el) return;
+
+      try {
+        const res = await fetch(url, { cache: "no-store" });
+        if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+        el.innerHTML = await res.text();
+      } catch (err) {
+        console.error("Partial load failed:", url, err);
+        el.innerHTML = "";
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      loadPartial("/View/header.html", "header-placeholder");
+      loadPartial("/View/footer.html", "footer-placeholder");
+    });
+  </script>
 </head>
 
 <body>
 
   <div id="header-placeholder"></div>
-  <script>
-    fetch("header.html")
-      .then(res => res.text())
-      .then(data => {
-        document.getElementById("header-placeholder").innerHTML = data;
-      });
-  </script>
 
   <main>
     <section class="auth">
@@ -64,7 +79,7 @@
           <!-- =========================
                REGISTER FORM
           ========================== -->
-          <form class="auth-form" id="registration-form">
+          <form class="auth-form" id="registration-form" novalidate>
 
             <div class="form-field">
               <label>Full Name</label>
@@ -106,7 +121,7 @@
                 <label>Password</label>
                 <div class="password-input-wrapper">
                   <input type="password" id="passwordInput" name="password" placeholder="Create password" required>
-                  <button type="button" class="password-toggle" id="passwordToggle">
+                  <button type="button" class="password-toggle" id="passwordToggle" aria-label="Toggle password visibility">
                     <i class="fas fa-eye"></i>
                   </button>
                 </div>
@@ -116,7 +131,7 @@
                 <label>Confirm Password</label>
                 <div class="password-input-wrapper">
                   <input type="password" id="confirmPasswordInput" name="confirm" placeholder="Re-enter password" required>
-                  <button type="button" class="password-toggle" id="confirmPasswordToggle">
+                  <button type="button" class="password-toggle" id="confirmPasswordToggle" aria-label="Toggle confirm password visibility">
                     <i class="fas fa-eye"></i>
                   </button>
                 </div>
@@ -128,9 +143,9 @@
                 <input type="checkbox" id="tosCheck" required>
                 <span>
                   I agree to the
-                  <a href="terms.html" class="form-link">Terms Of Service</a>
-                  &
-                  <a href="privacy.html" class="form-link">Privacy Policy</a>
+                  <a href="/View/terms.html" class="form-link">Terms Of Service</a>
+                  &amp;
+                  <a href="/View/privacy.html" class="form-link">Privacy Policy</a>
                 </span>
               </label>
             </div>
@@ -141,7 +156,7 @@
 
             <p class="auth-form__footer">
               Already registered?
-              <a href="login.html" class="form-link">Login</a>
+              <a href="/View/login.html" class="form-link">Login</a>
             </p>
 
           </form>
@@ -149,7 +164,7 @@
           <!-- =========================
                OTP FORM
           ========================== -->
-          <form class="auth-form" id="otp-form" style="display:none;">
+          <form class="auth-form" id="otp-form" style="display:none;" novalidate>
 
             <div class="form-field">
               <label>Email</label>
@@ -162,7 +177,7 @@
             </div>
 
             <button type="submit" class="btn btn--green btn--pill auth-form__btn" id="verifyOtpBtn">
-              Verify & Finish
+              Verify &amp; Finish
             </button>
 
             <p class="auth-form__footer">
@@ -184,13 +199,6 @@
   </main>
 
   <div id="footer-placeholder"></div>
-  <script>
-    fetch("footer.html")
-      .then(res => res.text())
-      .then(data => {
-        document.getElementById("footer-placeholder").innerHTML = data;
-      });
-  </script>
 
   <button id="backToTop" class="back-to-top" aria-label="Back to top">
     <i class="fa-solid fa-arrow-up"></i>
@@ -211,11 +219,9 @@
     window.addEventListener("scroll", toggleBackToTop);
     toggleBackToTop();
 
-    if (backToTop) {
-      backToTop.addEventListener("click", () => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      });
-    }
+    backToTop?.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
 
     // =========================
     // Helpers: Message UI
@@ -257,8 +263,8 @@
       }
     }
 
-    passwordToggle.addEventListener('click', () => toggleInputVisibility(passwordInput, passwordToggle));
-    confirmPasswordToggle.addEventListener('click', () => toggleInputVisibility(confirmPasswordInput, confirmPasswordToggle));
+    passwordToggle?.addEventListener('click', () => toggleInputVisibility(passwordInput, passwordToggle));
+    confirmPasswordToggle?.addEventListener('click', () => toggleInputVisibility(confirmPasswordInput, confirmPasswordToggle));
 
     // =========================
     // Registration -> Send OTP
@@ -271,9 +277,7 @@
     const otpCodeInput = document.getElementById('otpCode');
     const cardSubtitle = document.getElementById('cardSubtitle');
 
-    let pendingEmailForOtp = '';
-
-    regForm.addEventListener('submit', async function (e) {
+    regForm?.addEventListener('submit', async function (e) {
       e.preventDefault();
       hideMessage();
 
@@ -307,17 +311,15 @@
         const result = await response.json();
 
         if (result.success) {
-          pendingEmailForOtp = email;
           otpEmailInput.value = email;
 
-          // Switch UI to OTP
           regForm.style.display = 'none';
           otpForm.style.display = 'block';
           cardSubtitle.textContent = 'Enter the OTP we sent to your email';
 
           showMessage('<i class="fas fa-check-circle"></i> ' + result.message, true);
         } else {
-          showMessage('<i class="fas fa-exclamation-circle"></i> ' + result.message, false);
+          showMessage('<i class="fas fa-exclamation-circle"></i> ' + (result.message || 'Registration failed'), false);
         }
       } catch (error) {
         showMessage('<i class="fas fa-exclamation-circle"></i> An error occurred. Please try again.', false);
@@ -330,7 +332,7 @@
     // =========================
     // Verify OTP -> Finish Registration
     // =========================
-    otpForm.addEventListener('submit', async function (e) {
+    otpForm?.addEventListener('submit', async function (e) {
       e.preventDefault();
       hideMessage();
 
@@ -359,10 +361,10 @@
           showMessage('<i class="fas fa-check-circle"></i> ' + data.message, true);
 
           setTimeout(() => {
-            window.location.href = 'login.html';
+            window.location.href = '/View/login.html';
           }, 900);
         } else {
-          showMessage('<i class="fas fa-exclamation-circle"></i> ' + data.message, false);
+          showMessage('<i class="fas fa-exclamation-circle"></i> ' + (data.message || 'OTP verification failed'), false);
         }
       } catch (err) {
         showMessage('<i class="fas fa-exclamation-circle"></i> Error verifying OTP. Please try again.', false);
@@ -375,10 +377,9 @@
     // =========================
     // Resend OTP (simple approach)
     // =========================
-    document.getElementById('resendOtp').addEventListener('click', function (e) {
+    document.getElementById('resendOtp')?.addEventListener('click', function (e) {
       e.preventDefault();
 
-      // Go back to registration form to resend (same fields still there)
       otpForm.style.display = 'none';
       regForm.style.display = 'block';
       cardSubtitle.textContent = 'Fill the form to create your account';
@@ -389,7 +390,7 @@
     // =========================
     // Change email / Edit registration
     // =========================
-    document.getElementById('changeEmail').addEventListener('click', function (e) {
+    document.getElementById('changeEmail')?.addEventListener('click', function (e) {
       e.preventDefault();
       hideMessage();
 
