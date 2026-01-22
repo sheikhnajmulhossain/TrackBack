@@ -45,7 +45,16 @@ body{
   background:var(--bg);
 }
 
-a{ color:inherit; text-decoration:none; }
+
+.auth .form-link{
+  display:inline-block !important;
+  color:var(--blue) !important;
+  text-decoration:underline !important;
+}
+
+
+
+a{ text-decoration:none; }
 
 img{ display:block; }
 
