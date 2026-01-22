@@ -11,7 +11,8 @@ require_once __DIR__ . '/PHPMailer/src/SMTP.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-function sendMailSMTP($toEmail, $toName, $subject, $htmlBody) {
+function sendMail($to, $subject, $body)
+{
     $mail = new PHPMailer(true);
 
     try {
@@ -20,23 +21,20 @@ function sendMailSMTP($toEmail, $toName, $subject, $htmlBody) {
         $mail->SMTPAuth   = true;
         $mail->Username   = SMTP_USERNAME;
         $mail->Password   = SMTP_PASSWORD;
-        $mail->SMTPSecure = SMTP_SECURE;   // tls
-        $mail->Port       = SMTP_PORT;     // 587
-
-        $mail->CharSet = 'UTF-8';
+        $mail->SMTPSecure = SMTP_SECURE;
+        $mail->Port       = SMTP_PORT;
 
         $mail->setFrom(MAIL_FROM, MAIL_FROM_NAME);
-        $mail->addAddress($toEmail, $toName);
+        $mail->addAddress($to);
 
         $mail->isHTML(true);
         $mail->Subject = $subject;
-        $mail->Body    = $htmlBody;
-        $mail->AltBody = strip_tags($htmlBody);
+        $mail->Body    = $body;
 
-        $mail->send();
-        return true;
+        return $mail->send();
     } catch (Exception $e) {
-        error_log("Mailer Error: " . $mail->ErrorInfo);
+        error_log("MAIL ERROR: " . $mail->ErrorInfo);
         return false;
     }
 }
+

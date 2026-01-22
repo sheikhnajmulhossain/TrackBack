@@ -119,9 +119,10 @@ function handleRegisterStart($conn) {
     $q = "INSERT INTO pending_registrations (student_id, name, email, university, password_hash, otp_hash, otp_expires_at)
           VALUES ('$studentIdEsc', '$nameEsc', '$emailEsc', '$uniEsc', '$passEsc', '$otpHashEsc', '$expiresEsc')";
 
-    if (!$conn->query($q)) {
-        sendError('Failed to create OTP request', 500);
-    }
+if (!$conn->query($q)) {
+    sendError('Failed to create OTP request: ' . $conn->error, 500);
+}
+
 
     $html = "
       <div style='font-family:Arial,sans-serif;line-height:1.6'>
