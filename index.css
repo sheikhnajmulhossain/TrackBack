@@ -1051,3 +1051,16 @@ details[open] summary::after{ content:"–"; }
   transform: translateY(0);
 }
 
+/* =========================
+   Hide address text on mobile
+   ========================= */
+@media (max-width: 768px) {
+  .topbar__left {
+    display: none !important;
+  }
+
+  /* keep social icons aligned nicely */
+  .topbar__inner {
+    justify-content: flex-end;
+  }
+}
