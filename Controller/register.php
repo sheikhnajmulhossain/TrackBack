@@ -1,298 +1,141 @@
 <?php
-
-ini_set('session.cookie_lifetime', 86400); 
+ini_set('session.cookie_lifetime', 86400);
 ini_set('session.cookie_path', '/');
 ini_set('session.cookie_httponly', 1);
 ini_set('session.use_only_cookies', 1);
 session_start();
 
-
 include '../Model/database.php';
 include '../Model/functions.php';
 
-
-
 $error = '';
 $success = '';
+$showOtp = false;
 
+// values for re-populating form
+$fullname = '';
+$student_id = '';
+$email = '';
+$university = '';
+
+if (!isset($_SESSION['pending_register'])) {
+    $_SESSION['pending_register'] = null;
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $fullname = $_POST['fullname'] ?? '';
-    $student_id = $_POST['student_id'] ?? '';
-    $email = $_POST['email'] ?? '';
-    $university = $_POST['university'] ?? '';
-    $password = $_POST['password'] ?? '';
-    $confirm_password = $_POST['confirm'] ?? '';
-    
-    if (empty($fullname) || empty($student_id) || empty($email) || empty($password) || empty($confirm_password)) {
-        $error = 'All fields are required';
-    } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error = 'Invalid email format';
-    } else if (strlen($password) < 8) {
-        $error = 'Password must be at least 8 characters long';
-    } else if ($password !== $confirm_password) {
-        $error = 'Passwords do not match';
-    } else {
 
-        if (emailExists($conn, $email)) {
+    $step = $_POST['step'] ?? 'send_otp';
+
+    // ==================================================
+    // STEP 1: Validate form and SEND OTP
+    // ==================================================
+    if ($step === 'send_otp') {
+
+        $fullname = $_POST['fullname'] ?? '';
+        $student_id = $_POST['student_id'] ?? '';
+        $email = $_POST['email'] ?? '';
+        $university = $_POST['university'] ?? '';
+        $password = $_POST['password'] ?? '';
+        $confirm_password = $_POST['confirm'] ?? '';
+
+        if (empty($fullname) || empty($student_id) || empty($email) || empty($password) || empty($confirm_password) || empty($university)) {
+            $error = 'All fields are required';
+        } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $error = 'Invalid email format';
+        } else if (strlen($password) < 8) {
+            $error = 'Password must be at least 8 characters long';
+        } else if ($password !== $confirm_password) {
+            $error = 'Passwords do not match';
+        } else if (emailExists($conn, $email)) {
             $error = 'Email already registered. Please login instead.';
         } else if (studentIdExists($conn, $student_id)) {
-
             $error = 'Student ID already registered. Please login instead.';
         } else {
+            // store pending info in session (store hash, not plain password)
+            $_SESSION['pending_register'] = [
+                'fullname' => $fullname,
+                'student_id' => $student_id,
+                'email' => $email,
+                'university' => $university,
+                'password_hash' => hashPassword($password)
+            ];
 
-            $userId = registerUser($conn, $student_id, $fullname, $email, $university, $password);
-            
-            if ($userId) {
-                $success = 'Registration successful! Your account is pending admin approval. You will receive an email once approved.';
-
-                $fullname = '';
-                $student_id = '';
-                $email = '';
-                $university = '';
-                $password = '';
-                $confirm_password = '';
+            [$sent, $msg] = sendOtpEmail($conn, $email, $fullname, 'register');
+            if ($sent) {
+                $success = 'OTP sent to your email. Please enter it below.';
+                $showOtp = true;
             } else {
-                $error = 'Registration failed. Please try again.';
+                $error = $msg;
+            }
+        }
+    }
+
+    // ==================================================
+    // STEP 2: Verify OTP and COMPLETE registration
+    // ==================================================
+    if ($step === 'verify_otp') {
+
+        $otp = $_POST['otp'] ?? '';
+        $pending = $_SESSION['pending_register'];
+
+        if (!$pending) {
+            $error = 'Session expired. Please try again.';
+        } else if (empty($otp)) {
+            $error = 'Please enter the OTP.';
+            $showOtp = true;
+            $fullname = $pending['fullname'];
+            $student_id = $pending['student_id'];
+            $email = $pending['email'];
+            $university = $pending['university'];
+        } else {
+            $ok = otpVerifyAndConsume($conn, $pending['email'], 'register', $otp);
+
+            if (!$ok) {
+                $error = 'Invalid or expired OTP. Please try again.';
+                $showOtp = true;
+
+                $fullname = $pending['fullname'];
+                $student_id = $pending['student_id'];
+                $email = $pending['email'];
+                $university = $pending['university'];
+            } else {
+                // Use your existing registerUser function but it expects plain password.
+                // So we insert directly using the stored hash.
+                $studentId = sanitizeInput($pending['student_id']);
+                $fullName  = sanitizeInput($pending['fullname']);
+                $mail      = sanitizeInput($pending['email']);
+                $uni       = sanitizeInput($pending['university']);
+                $passHash  = $conn->real_escape_string($pending['password_hash']);
+
+                $q = "INSERT INTO users (student_id, name, email, password_hash, user_type, university, account_status)
+                      VALUES ('$studentId', '$fullName', '$mail', '$passHash', 'student', '$uni', 'pending')";
+
+                if ($conn->query($q)) {
+                    $_SESSION['pending_register'] = null;
+                    $success = 'Registration successful! Your account is pending admin approval.';
+                    $showOtp = false;
+
+                    $fullname = $student_id = $email = $university = '';
+                } else {
+                    $error = 'Registration failed. Please try again.';
+                    $showOtp = true;
+
+                    $fullname = $pending['fullname'];
+                    $student_id = $pending['student_id'];
+                    $email = $pending['email'];
+                    $university = $pending['university'];
+                }
             }
         }
     }
 }
 
+// If user refreshed after OTP sent, keep OTP box visible
+if ($_SESSION['pending_register'] && empty($success) && empty($error)) {
+    $showOtp = true;
+    $fullname = $_SESSION['pending_register']['fullname'];
+    $student_id = $_SESSION['pending_register']['student_id'];
+    $email = $_SESSION['pending_register']['email'];
+    $university = $_SESSION['pending_register']['university'];
+}
 ?>
-
-<!doctype html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Create Account - TrackBack</title>
-
-  <link rel="icon" href="../img/logo/favicon-circle.png" type="image/png" />
-
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
-    rel="stylesheet" />
-
-  <link rel="stylesheet" href="../index.css" />
-</head>
-
-<body>
-
-
-  <div id="header-placeholder"></div>
-  <script>
-    fetch("../header.html")
-      .then(res => res.text())
-      .then(data => {
-        document.getElementById("header-placeholder").innerHTML = data;
-      });
-  </script>
-
-  <main>
-    <section class="auth">
-      <div class="container auth__grid">
-
-        <div class="auth__info">
-          <h1 class="auth__title">
-            Create your <span class="accent">TrackBack</span> account
-          </h1>
-
-          <p class="auth__subtitle">
-            Join students across universities to securely post lost and found items.
-          </p>
-
-          <ul class="auth__list">
-            <li>Report lost belongings</li>
-            <li>Post found items</li>
-            <li>Message with other students</li>
-            <li>Verified university accounts</li>
-          </ul>
-
-          <div class="auth__badge">
-            🎓 Trusted by AIUB, NSU, DU, BRAC students
-          </div>
-        </div>
-
-        <div class="auth__card">
-          <h2 class="auth-card__title">Student Registration</h2>
-          <p class="auth-card__subtitle">Fill the form to create your account</p>
-
-          <!-- Display error message -->
-          <?php if (!empty($error)): ?>
-            <div class="alert alert-error" style="margin-bottom: 20px; padding: 12px; background-color: #fee; border: 1px solid #fcc; border-radius: 4px; color: #c33;">
-              <strong>Error:</strong> <?php echo htmlspecialchars($error); ?>
-            </div>
-          <?php endif; ?>
-
-
-          <?php if (!empty($success)): ?>
-            <div class="alert alert-success" style="margin-bottom: 20px; padding: 12px; background-color: #efe; border: 1px solid #cfc; border-radius: 4px; color: #3c3;">
-              <strong>Success:</strong> <?php echo htmlspecialchars($success); ?>
-            </div>
-          <?php endif; ?>
-
-          <form class="auth-form" action="register.php" method="post">
-
-            <div class="form-field">
-              <label>Full Name</label>
-              <input type="text" name="fullname" placeholder="Your Name" value="<?php echo htmlspecialchars($fullname ?? ''); ?>" required>
-            </div>
-
-            <div class="auth-form__row">
-              <div class="form-field">
-                <label>University</label>
-                <select name="university" required>
-                  <option value="" selected>Select University</option>
-                  <option value="AIUB" <?php echo ($university === 'AIUB' ? 'selected' : ''); ?>>AIUB</option>
-                  <option value="NSU" <?php echo ($university === 'NSU' ? 'selected' : ''); ?>>NSU</option>
-                  <option value="DU" <?php echo ($university === 'DU' ? 'selected' : ''); ?>>DU</option>
-                  <option value="BRAC" <?php echo ($university === 'BRAC' ? 'selected' : ''); ?>>BRAC</option>
-                </select>
-              </div>
-
-              <div class="form-field">
-                <label>Student ID</label>
-                <input type="text" name="student_id" placeholder="ID No." autocomplete="off" value="<?php echo htmlspecialchars($student_id ?? ''); ?>" required>
-              </div>
-            </div>
-
-            <div class="form-field">
-              <label>Email</label>
-              <input type="email" name="email" placeholder="student@university.edu" value="<?php echo htmlspecialchars($email ?? ''); ?>" required>
-            </div>
-
-            <div class="auth-form__row">
-              <div class="form-field">
-                <label>Password</label>
-                <div class="password-input-wrapper">
-                  <input type="password" name="password" id="passwordInput" placeholder="Create password" required>
-                  <button type="button" class="password-toggle" id="passwordToggle" title="Show/Hide Password">
-                    <i class="fas fa-eye"></i>
-                  </button>
-                </div>
-              </div>
-
-              <div class="form-field">
-                <label>Confirm Password</label>
-                <div class="password-input-wrapper">
-                  <input type="password" name="confirm" id="confirmPasswordInput" placeholder="Re-enter password" required>
-                  <button type="button" class="password-toggle" id="confirmPasswordToggle" title="Show/Hide Password">
-                    <i class="fas fa-eye"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div class="form-field form-field--inline">
-              <label class="checkbox">
-                <input type="checkbox" name="agree" required>
-                <span>
-                  I agree to the
-                  <a href="../terms.html" class="form-link">Terms Of Service</a>
-                  &
-                  <a href="../privacy.html" class="form-link">Privacy Policy</a>
-                </span>
-              </label>
-            </div>
-
-            <button type="submit" class="btn btn--green btn--pill auth-form__btn">
-              Create Account
-            </button>
-
-            <p class="auth-form__footer">
-              Already registered?
-              <a href="login.php" class="form-link">Login</a>
-            </p>
-
-          </form>
-        </div>
-
-      </div>
-    </section>
-  </main>
-
-
-  <div id="footer-placeholder"></div>
-  <script>
-    fetch("../footer.html")
-      .then(res => res.text())
-      .then(data => {
-        document.getElementById("footer-placeholder").innerHTML = data;
-      });
-  </script>
-
-  <script>
-    const backToTop = document.getElementById("backToTop");
-
-    function toggleBackToTop() {
-      if (backToTop) {
-        if (window.scrollY > 300) backToTop.classList.add("show");
-        else backToTop.classList.remove("show");
-      }
-    }
-
-    window.addEventListener("scroll", toggleBackToTop);
-    toggleBackToTop();
-
-    if (backToTop) {
-      backToTop.addEventListener("click", () => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      });
-    }
-    const passwordInput = document.getElementById("passwordInput");
-    const passwordToggle = document.getElementById("passwordToggle");
-
-    if (passwordToggle && passwordInput) {
-      passwordToggle.addEventListener("click", function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        const icon = this.querySelector("i");
-        
-        if (passwordInput.type === "password") {
-          passwordInput.type = "text";
-          icon.classList.remove("fa-eye");
-          icon.classList.add("fa-eye-slash");
-          this.classList.add("active");
-        } else {
-          passwordInput.type = "password";
-          icon.classList.remove("fa-eye-slash");
-          icon.classList.add("fa-eye");
-          this.classList.remove("active");
-        }
-      });
-    }
-
-
-    const confirmPasswordInput = document.getElementById("confirmPasswordInput");
-    const confirmPasswordToggle = document.getElementById("confirmPasswordToggle");
-
-    if (confirmPasswordToggle && confirmPasswordInput) {
-      confirmPasswordToggle.addEventListener("click", function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        const icon = this.querySelector("i");
-        
-        if (confirmPasswordInput.type === "password") {
-          confirmPasswordInput.type = "text";
-          icon.classList.remove("fa-eye");
-          icon.classList.add("fa-eye-slash");
-          this.classList.add("active");
-        } else {
-          confirmPasswordInput.type = "password";
-          icon.classList.remove("fa-eye-slash");
-          icon.classList.add("fa-eye");
-          this.classList.remove("active");
-        }
-      });
-    }
-  </script>
-
-</body>
-</html>
