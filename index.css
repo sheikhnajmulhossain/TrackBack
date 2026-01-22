@@ -1051,71 +1051,31 @@ details[open] summary::after{ content:"–"; }
   transform: translateY(0);
 }
 
-/* =========================
-   ✅ HERO: Make phone responsive
-   ========================= */
-@media (max-width: 900px) {
-  /* stack hero columns */
-  .hero__grid,
-  .hero_grid,
-  .hero-grid,
-  .hero .container {
-    /* if your hero uses grid, this will help */
-  }
-}
-
-@media (max-width: 768px) {
-  /* Your hero wrapper in DOM shows: .container.hero__grid */
-  .hero__grid{
+@media (max-width: 768px){
+  /* force 1-column hero */
+  .container.hero__grid{
+    display: grid !important;
     grid-template-columns: 1fr !important;
     gap: 18px !important;
-    text-align: left;
   }
 
-  /* Left + Right blocks should be full width */
-  .hero__left,
-  .hero__right{
-    width: 100%;
-  }
-
-  /* Title scales nicely */
   .hero__title{
-    font-size: clamp(34px, 8vw, 52px) !important;
+    font-size: 40px !important;
     line-height: 1.05 !important;
   }
 
-  /* Paragraph spacing */
-  .hero__desc{
-    font-size: 15px !important;
-    line-height: 1.7 !important;
-    margin-top: 10px !important;
-  }
-
-  /* CTA buttons wrap */
   .hero__cta{
-    display: flex !important;
-    flex-wrap: wrap !important;
-    gap: 10px !important;
-  }
-  .hero__cta .btn{
-    height: 42px !important;
-    padding: 0 14px !important;
+    display:flex !important;
+    flex-wrap:wrap !important;
+    gap:10px !important;
   }
 
-  /* University buttons row (the chips you have) */
   .uni-row{
     grid-template-columns: 1fr 1fr !important;
-    gap: 10px !important;
+    gap:10px !important;
   }
 }
 
-/* very small phones */
 @media (max-width: 420px){
-  .uni-row{
-    grid-template-columns: 1fr !important;
-  }
-  .hero__cta .btn{
-    width: 100% !important;
-    justify-content: center;
-  }
+  .uni-row{ grid-template-columns: 1fr !important; }
 }
