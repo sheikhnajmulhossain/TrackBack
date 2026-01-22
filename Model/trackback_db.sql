@@ -1,15 +1,16 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.2
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Jan 22, 2026 at 12:30 PM
--- Server version: 10.11.14-MariaDB-log
--- PHP Version: 8.4.11
+-- Host: 127.0.0.1
+-- Generation Time: Jan 19, 2026 at 07:27 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
+
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -259,12 +260,7 @@ INSERT INTO `audit_logs` (`log_id`, `user_id`, `action_type`, `action_details`, 
 (266, 1, 'REMOVE_MODERATOR', '{\"user_id\":21}', '::1', '2026-01-19 15:04:18'),
 (267, 1, 'LOGIN', 'User logged in via API', '::1', '2026-01-19 15:18:26'),
 (268, 1, 'LOGIN', 'User logged in via API', '::1', '2026-01-19 18:24:39'),
-(269, 1, 'CREATE_USER', '{\"new_user_id\":{\"success\":true,\"user_id\":23}}', '::1', '2026-01-19 18:25:21'),
-(270, 16, 'LOGIN', 'User logged in via API', '192.140.253.60', '2026-01-22 05:31:37'),
-(271, 16, 'LOGIN', 'User logged in via API', '192.140.253.60', '2026-01-22 06:13:56'),
-(272, 16, 'LOGIN', 'User logged in via API', '192.140.253.60', '2026-01-22 06:14:12'),
-(273, 1, 'LOGIN', 'User logged in via API', '192.140.253.60', '2026-01-22 06:14:48'),
-(274, 1, 'UPDATE_PROFILE', '[]', '192.140.253.60', '2026-01-22 06:15:19');
+(269, 1, 'CREATE_USER', '{\"new_user_id\":{\"success\":true,\"user_id\":23}}', '::1', '2026-01-19 18:25:21');
 
 -- --------------------------------------------------------
 
@@ -283,21 +279,6 @@ CREATE TABLE `disputes` (
   `resolution` text DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `resolved_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `email_otps`
---
-
-CREATE TABLE `email_otps` (
-  `id` int(11) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `purpose` enum('register','reset') NOT NULL,
-  `otp_hash` varchar(255) NOT NULL,
-  `expires_at` datetime NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -438,7 +419,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `student_id`, `name`, `email`, `password_hash`, `user_type`, `university`, `phone`, `profile_picture`, `account_status`, `created_at`, `updated_at`) VALUES
-(1, 'ADMIN001', 'Administrator', 'trackback.top@gmail.com', '$2y$12$NpRLHh9yioCwq6GdInTQCuOcIX8LYoY0Nk5na3zBeM7emz1Mp3Pim', 'admin', '', '', NULL, 'active', '2026-01-17 21:14:12', '2026-01-22 06:15:19'),
+(1, 'ADMIN001', 'Administrator Shamiul', 'admin@trackback.com', '$2y$12$NpRLHh9yioCwq6GdInTQCuOcIX8LYoY0Nk5na3zBeM7emz1Mp3Pim', 'admin', '', '', NULL, 'banned', '2026-01-17 21:14:12', '2026-01-19 18:25:21'),
 (15, 'USR1768812974', 'Mashrafi Ahsan', 'mashrafi@gmail.com', '$2y$12$xBg.lyPy0gCht3qILnwwW.faBi.5FBgq258eh6m7HYEBJhJ6wDUtm', '', 'AIUB', '01999999999', NULL, 'active', '2026-01-19 08:56:14', '2026-01-19 09:22:27'),
 (16, 'USR1768813541', 'Sheikh Najmul', 'sheikh@gmail.com', '$2y$12$ui57KSDlVy1xdQqVePGd7O47dw4/Hl0iXNxCqKd3YFgi.z6iw6gca', 'moderator', NULL, NULL, NULL, 'active', '2026-01-19 09:05:41', '2026-01-19 09:07:12'),
 (17, 'USR1768813595', 'Syed Iftear', 'syedsurids5@gmail.com', '$2y$12$foKVExEYRy5/5fg2meMkH.qtKhZv33AhwEVKU1kuwSs4I5lS1OQjS', '', 'AIUB', '01964722472', NULL, 'active', '2026-01-19 09:06:35', '2026-01-19 09:11:54'),
@@ -446,8 +427,7 @@ INSERT INTO `users` (`user_id`, `student_id`, `name`, `email`, `password_hash`, 
 (19, '23-55555-1', 'Rifat Kabir', 'rifat@gmail.com', '$2y$12$QOxQw.c7VRTZ6.ZeWtlHN.Gpf1oJ2CReju4JDwOqmU2Vsh.TDzZq2', 'student', 'AIUB', NULL, NULL, 'active', '2026-01-19 12:35:52', '2026-01-19 12:55:28'),
 (20, '23-77777-1', 'Tutul Majumder', 'tutul@gmail.com', '$2y$12$eKN0iSngMOf.N83PREhk8e4PZajIi5vSs099Za8172pV5RMsjWwzW', 'student', 'AIUB', NULL, NULL, 'active', '2026-01-19 12:38:47', '2026-01-19 12:55:24'),
 (21, 'admin@trackback.com', 'jsndnsk', 'a@b.com', '$2y$12$zuIRQHU4KcnLJyzwyp7d8O9EAhSQMPhv0uZzIb3I8LZcrpVLsVMsC', 'student', 'NSU', NULL, NULL, 'active', '2026-01-19 13:20:22', '2026-01-19 15:04:18'),
-(23, 'USR1768847120', 'chocoTaco', 'admin5@trackback.com', '$2y$12$4E16zZnkfk7MhWTbG3nfbebiI3l3C/gEdiRZfhXSo80Uc1AUVfVya', 'admin', NULL, NULL, NULL, 'pending', '2026-01-19 18:25:21', '2026-01-19 18:25:21'),
-(24, '328190812390832', 'sheikh', 'bbeattergaming@gmail.com', '$2y$12$f6adzF.0KDU6/JetQiuzFu/NSyYpWYMqHAteF9BZVKhvOlTkASwSG', 'student', 'AIUB', NULL, NULL, 'pending', '2026-01-22 06:27:41', '2026-01-22 06:27:41');
+(23, 'USR1768847120', 'chocoTaco', 'admin5@trackback.com', '$2y$12$4E16zZnkfk7MhWTbG3nfbebiI3l3C/gEdiRZfhXSo80Uc1AUVfVya', 'admin', NULL, NULL, NULL, 'pending', '2026-01-19 18:25:21', '2026-01-19 18:25:21');
 
 -- --------------------------------------------------------
 
@@ -493,13 +473,6 @@ ALTER TABLE `disputes`
   ADD KEY `claimant1_id` (`claimant1_id`),
   ADD KEY `claimant2_id` (`claimant2_id`),
   ADD KEY `moderator_id` (`moderator_id`);
-
---
--- Indexes for table `email_otps`
---
-ALTER TABLE `email_otps`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `uniq_email_purpose` (`email`,`purpose`);
 
 --
 -- Indexes for table `messages`
@@ -563,19 +536,13 @@ ALTER TABLE `warnings`
 -- AUTO_INCREMENT for table `audit_logs`
 --
 ALTER TABLE `audit_logs`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=275;
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=270;
 
 --
 -- AUTO_INCREMENT for table `disputes`
 --
 ALTER TABLE `disputes`
   MODIFY `dispute_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `email_otps`
---
-ALTER TABLE `email_otps`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `messages`
@@ -611,7 +578,7 @@ ALTER TABLE `post_flags`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `warnings`
