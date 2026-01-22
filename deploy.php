@@ -1,21 +1,26 @@
 <?php
 // Deploy Script - Called by GitHub Webhook
-$secret = 'K7#mP9$xL2@Q5!vN3&dR6*jF1%bZ4~cS'; // Change this to something random
+$secret = 'K7#mP9$xL2@Q5!vN3&dR6*jF1%bZ4~cS';
 
-// Verify webhook signature
 $payload = file_get_contents('php://input');
 $signature = $_SERVER['HTTP_X_HUB_SIGNATURE_256'] ?? '';
-$hash = 'sha256=' . hash_hmac('sha256', $payload, $secret);
+$expected = 'sha256=' . hash_hmac('sha256', $payload, $secret);
 
-if (!hash_equals($hash, $signature)) {
+if (!hash_equals($expected, $signature)) {
     http_response_code(403);
-    die('Unauthorized');
+    exit('Unauthorized');
 }
 
-// Pull latest changes
-$output = shell_exec('cd /home/trackback/public_html/trackback && git pull origin main 2>&1');
-file_put_contents('/tmp/deploy.log', date('Y-m-d H:i:s') . ' - ' . $output . "\n", FILE_APPEND);
+$repoPath = '/home/trackback/public_html';
+
+// Use full git path (common fix on cPanel)
+$git = '/usr/bin/git';
+
+$cmd = "cd " . escapeshellarg($repoPath) . " && $git pull origin main 2>&1";
+$output = shell_exec($cmd);
+
+file_put_contents($repoPath . '/deploy.log', date('Y-m-d H:i:s') . " - " . $output . PHP_EOL, FILE_APPEND);
 
 http_response_code(200);
+header('Content-Type: application/json');
 echo json_encode(['status' => 'deployed', 'output' => $output]);
-?>
