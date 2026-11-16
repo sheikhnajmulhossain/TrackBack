@@ -1,0 +1,20 @@
+# Local configuration and credentials
+/Model/config.php
+/Model/mail_config.php
+.env
+.env.*
+!.env.example
+/.htaccess
+.htpasswd
+*.pem
+*.key
+
+# Production-only scripts and data
+/Controller/reset_admin.php
+/deploy.php
+/Model/trackback_db.sql
+/View/img/posts/
+/uploads/
+error_log
+*.log
+*.bak

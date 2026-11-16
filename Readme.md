@@ -38,8 +38,9 @@ TrackBack is a web-based Lost & Found platform designed for university environme
 
 ## Key Files & Folders
 - **Model/**
-  - `config.php`: Database credentials
-  - `database.php`: Auto-creates DB/tables on first run
+  - `config.example.php` and `mail_config.example.php`: Templates for local configuration
+  - `database.php`: Database connection used by the application
+  - `schema.sql`: Table definitions for a fresh database
   - `functions.php`: Core business logic, CRUD, auth, validation
   - `PHPMailer/`: Email sending library
 - **Controller/**
@@ -51,8 +52,7 @@ TrackBack is a web-based Lost & Found platform designed for university environme
   - `*-dashboard.html/.js/.css`: Dashboards for each role
   - `img/`: Uploaded images (organized by type)
 - **Root**
-  - `index.html`, `login.html`, `registration.html`: Entry points
-  - `.htaccess`: SPA fallback routing (if present)
+  - `index.html`: Homepage. The login and registration pages are under `View/`.
 
 ---
 
@@ -82,11 +82,10 @@ TrackBack is a web-based Lost & Found platform designed for university environme
 ---
 
 ## Getting Started
-1. **Clone the repository**
-2. **Configure database** in `Model/config.php`
-3. **Deploy on PHP server** (e.g., XAMPP, WAMP, LAMP)
-4. **Access via browser** at `index.html` or `index.php`
-5. **Register as a student**; admin must approve new accounts
+1. Clone the repository and serve its root with PHP and the MySQLi extension.
+2. On a fresh installation, create an empty MySQL or MariaDB database and import `Model/schema.sql`. Existing deployments should keep their existing database.
+3. Copy `Model/config.example.php` to `Model/config.php` and set the `TRACKBACK_DB_*` values for your server. Copy `Model/mail_config.example.php` to `Model/mail_config.php` and configure the `TRACKBACK_SMTP_*` and `TRACKBACK_MAIL_*` settings. Keep both live config files on the server.
+4. Open `index.html`. Registration and password recovery send email over SMTP. New student accounts require admin approval.
 
 ---
 

@@ -11,7 +11,7 @@ session_start();
 
 include '../Model/database.php';
 include '../Model/functions.php';
-include '../Model/mailer.php'; // ✅ NEW (PHPMailer helper)
+include '../Model/mailer.php';
 
 setCorsHeaders();
 
@@ -19,16 +19,12 @@ $method = $_SERVER['REQUEST_METHOD'];
 $action = $_GET['action'] ?? $_POST['action'] ?? null;
 
 switch ($action) {
-
-    // ✅ NEW: Registration with Email OTP
     case 'register_start':
         handleRegisterStart($conn);
         break;
     case 'register_verify':
         handleRegisterVerify($conn);
         break;
-
-    // Existing
     case 'login':
         handleLogin($conn);
         break;
@@ -41,25 +37,20 @@ switch ($action) {
     case 'verify_email':
         handleVerifyEmail($conn);
         break;
-
-    // ✅ NEW: Forgot Password via Email OTP
     case 'forgot_start':
         handleForgotStart($conn);
         break;
     case 'forgot_verify':
         handleForgotVerify($conn);
         break;
-
     default:
         sendError('Invalid action', 400);
 }
 
-/* =========================================================
-   ✅ NEW: REGISTER START (Send OTP Email, store pending)
-   Requires table: pending_registrations
-   ========================================================= */
 function handleRegisterStart($conn) {
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') sendError('Method not allowed', 405);
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        sendError('Method not allowed', 405);
+    }
 
     $studentId = trim($_POST['student_id'] ?? '');
     $name = trim($_POST['name'] ?? '');
@@ -92,15 +83,12 @@ function handleRegisterStart($conn) {
         sendError('Email already registered', 409);
     }
 
-    // Clear old pending requests for same email
     $emailEsc = $conn->real_escape_string($email);
     $conn->query("DELETE FROM pending_registrations WHERE email='$emailEsc'");
 
     $otp = (string)random_int(100000, 999999);
     $otpHash = password_hash($otp, PASSWORD_DEFAULT);
 
-    // Use your existing password hashing (from functions.php)
-    // If you don't have hashPassword(), we fallback safely below
     if (function_exists('hashPassword')) {
         $passwordHash = hashPassword($password);
     } else {
@@ -112,17 +100,15 @@ function handleRegisterStart($conn) {
     $uniEsc = $conn->real_escape_string($university);
     $passEsc = $conn->real_escape_string($passwordHash);
     $otpHashEsc = $conn->real_escape_string($otpHash);
-
-    $expires = date('Y-m-d H:i:s', time() + (10 * 60)); // 10 minutes
+    $expires = date('Y-m-d H:i:s', time() + (10 * 60));
     $expiresEsc = $conn->real_escape_string($expires);
 
     $q = "INSERT INTO pending_registrations (student_id, name, email, university, password_hash, otp_hash, otp_expires_at)
           VALUES ('$studentIdEsc', '$nameEsc', '$emailEsc', '$uniEsc', '$passEsc', '$otpHashEsc', '$expiresEsc')";
 
-if (!$conn->query($q)) {
-    sendError('Failed to create OTP request: ' . $conn->error, 500);
-}
-
+    if (!$conn->query($q)) {
+        sendError('Failed to create OTP request: ' . $conn->error, 500);
+    }
 
     $html = "
       <div style='font-family:Arial,sans-serif;line-height:1.6'>
@@ -134,7 +120,7 @@ if (!$conn->query($q)) {
       </div>
     ";
 
-    $sent = sendMailSMTP($email, $name, 'TrackBack OTP Verification', $html);
+    $sent = sendMail($email, 'TrackBack OTP Verification', $html);
     if (!$sent) {
         sendError('OTP could not be sent. Check SMTP settings.', 500);
     }
@@ -142,11 +128,10 @@ if (!$conn->query($q)) {
     sendSuccess(['email' => $email], 'OTP sent to your email. Please verify to finish registration.');
 }
 
-/* =========================================================
-   ✅ NEW: REGISTER VERIFY (Verify OTP and create user)
-   ========================================================= */
 function handleRegisterVerify($conn) {
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') sendError('Method not allowed', 405);
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        sendError('Method not allowed', 405);
+    }
 
     $email = trim($_POST['email'] ?? '');
     $otp = trim($_POST['otp'] ?? '');
@@ -157,6 +142,7 @@ function handleRegisterVerify($conn) {
 
     $emailEsc = $conn->real_escape_string($email);
     $res = $conn->query("SELECT * FROM pending_registrations WHERE email='$emailEsc' LIMIT 1");
+
     if (!$res || $res->num_rows === 0) {
         sendError('No pending registration found', 404);
     }
@@ -172,7 +158,6 @@ function handleRegisterVerify($conn) {
         sendError('Invalid OTP', 401);
     }
 
-    // Double-check again
     if (emailExists($conn, $email)) {
         $conn->query("DELETE FROM pending_registrations WHERE email='$emailEsc'");
         sendError('Email already registered. Please login.', 409);
@@ -183,9 +168,6 @@ function handleRegisterVerify($conn) {
         sendError('Student ID already registered. Please login.', 409);
     }
 
-    // Create user as pending (same behavior as your current system)
-    // registerUser() expects plain password - but we already have a hash.
-    // So we insert directly to match your schema:
     $studentIdEsc = $conn->real_escape_string($row['student_id']);
     $nameEsc = $conn->real_escape_string($row['name']);
     $uniEsc = $conn->real_escape_string($row['university']);
@@ -203,39 +185,45 @@ function handleRegisterVerify($conn) {
     sendSuccess([], 'Email verified! Registration complete. Please wait for admin approval.');
 }
 
-/* =========================================================
-   ✅ NEW: FORGOT START (Send OTP)
-   Requires table: password_reset_tokens (token stores OTP HASH)
-   ========================================================= */
 function handleForgotStart($conn) {
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') sendError('Method not allowed', 405);
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        sendError('Method not allowed', 405);
+    }
 
     $email = trim($_POST['email'] ?? '');
-    if ($email === '') sendError('Email is required', 400);
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) sendError('Invalid email format', 400);
 
-    // Get user by email (if you have a helper use it, else query)
+    if ($email === '') {
+        sendError('Email is required', 400);
+    }
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        sendError('Invalid email format', 400);
+    }
+
     $emailEsc = $conn->real_escape_string($email);
-    $res = $conn->query("SELECT user_id, name FROM users WHERE email='$emailEsc' LIMIT 1");
-    if (!$res || $res->num_rows === 0) sendError('No account found with this email', 404);
+    $res = $conn->query("SELECT user_id FROM users WHERE email='$emailEsc' LIMIT 1");
+
+    if (!$res || $res->num_rows === 0) {
+        sendError('No account found with this email', 404);
+    }
 
     $user = $res->fetch_assoc();
     $userId = (int)$user['user_id'];
-    $name = $user['name'] ?? $email;
 
-    // Delete old tokens for this user
     $conn->query("DELETE FROM password_reset_tokens WHERE user_id=$userId");
 
     $otp = (string)random_int(100000, 999999);
     $otpHash = password_hash($otp, PASSWORD_DEFAULT);
-
     $otpHashEsc = $conn->real_escape_string($otpHash);
-    $expires = date('Y-m-d H:i:s', time() + (10 * 60)); // 10 minutes
+    $expires = date('Y-m-d H:i:s', time() + (10 * 60));
     $expiresEsc = $conn->real_escape_string($expires);
 
     $q = "INSERT INTO password_reset_tokens (user_id, token, expires_at)
           VALUES ($userId, '$otpHashEsc', '$expiresEsc')";
-    if (!$conn->query($q)) sendError('Failed to create reset token', 500);
+
+    if (!$conn->query($q)) {
+        sendError('Failed to create reset token', 500);
+    }
 
     $html = "
       <div style='font-family:Arial,sans-serif;line-height:1.6'>
@@ -246,17 +234,18 @@ function handleForgotStart($conn) {
       </div>
     ";
 
-    $sent = sendMailSMTP($email, $name, 'TrackBack Password Reset OTP', $html);
-    if (!$sent) sendError('OTP could not be sent. Check SMTP settings.', 500);
+    $sent = sendMail($email, 'TrackBack Password Reset OTP', $html);
+    if (!$sent) {
+        sendError('OTP could not be sent. Check SMTP settings.', 500);
+    }
 
     sendSuccess(['email' => $email], 'OTP sent to your email.');
 }
 
-/* =========================================================
-   ✅ NEW: FORGOT VERIFY (Verify OTP + update password)
-   ========================================================= */
 function handleForgotVerify($conn) {
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') sendError('Method not allowed', 405);
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        sendError('Method not allowed', 405);
+    }
 
     $email = trim($_POST['email'] ?? '');
     $otp = trim($_POST['otp'] ?? '');
@@ -277,13 +266,19 @@ function handleForgotVerify($conn) {
 
     $emailEsc = $conn->real_escape_string($email);
     $resU = $conn->query("SELECT user_id FROM users WHERE email='$emailEsc' LIMIT 1");
-    if (!$resU || $resU->num_rows === 0) sendError('No account found with this email', 404);
+
+    if (!$resU || $resU->num_rows === 0) {
+        sendError('No account found with this email', 404);
+    }
 
     $u = $resU->fetch_assoc();
     $userId = (int)$u['user_id'];
 
     $resT = $conn->query("SELECT * FROM password_reset_tokens WHERE user_id=$userId ORDER BY token_id DESC LIMIT 1");
-    if (!$resT || $resT->num_rows === 0) sendError('No reset request found', 404);
+
+    if (!$resT || $resT->num_rows === 0) {
+        sendError('No reset request found', 404);
+    }
 
     $tokenRow = $resT->fetch_assoc();
 
@@ -296,7 +291,6 @@ function handleForgotVerify($conn) {
         sendError('Invalid OTP', 401);
     }
 
-    // Hash new password (use your existing method if available)
     if (function_exists('hashPassword')) {
         $newHash = hashPassword($newPass);
     } else {
@@ -313,10 +307,6 @@ function handleForgotVerify($conn) {
 
     sendSuccess([], 'Password updated successfully. You can login now.');
 }
-
-/* =======================
-   EXISTING FUNCTIONS
-   ======================= */
 
 function handleLogin($conn) {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -405,7 +395,7 @@ function handleVerifyEmail($conn) {
         sendError('Method not allowed', 405);
     }
 
-    $email = $_POST['email'] ?? '';
+    $email = trim($_POST['email'] ?? '');
 
     if (empty($email)) {
         sendError('Email is required', 400);
@@ -417,4 +407,3 @@ function handleVerifyEmail($conn) {
         sendSuccess([], 'Email is available');
     }
 }
-?>
