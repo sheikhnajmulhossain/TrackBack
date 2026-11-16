@@ -134,7 +134,7 @@ if (!$conn->query($q)) {
       </div>
     ";
 
-    $sent = sendMailSMTP($email, $name, 'TrackBack OTP Verification', $html);
+    $sent = sendMail($email, 'TrackBack OTP Verification', $html);
     if (!$sent) {
         sendError('OTP could not be sent. Check SMTP settings.', 500);
     }
@@ -216,12 +216,11 @@ function handleForgotStart($conn) {
 
     // Get user by email (if you have a helper use it, else query)
     $emailEsc = $conn->real_escape_string($email);
-    $res = $conn->query("SELECT user_id, name FROM users WHERE email='$emailEsc' LIMIT 1");
+    $res = $conn->query("SELECT user_id FROM users WHERE email='$emailEsc' LIMIT 1");
     if (!$res || $res->num_rows === 0) sendError('No account found with this email', 404);
 
     $user = $res->fetch_assoc();
     $userId = (int)$user['user_id'];
-    $name = $user['name'] ?? $email;
 
     // Delete old tokens for this user
     $conn->query("DELETE FROM password_reset_tokens WHERE user_id=$userId");
@@ -246,7 +245,7 @@ function handleForgotStart($conn) {
       </div>
     ";
 
-    $sent = sendMailSMTP($email, $name, 'TrackBack Password Reset OTP', $html);
+    $sent = sendMail($email, 'TrackBack Password Reset OTP', $html);
     if (!$sent) sendError('OTP could not be sent. Check SMTP settings.', 500);
 
     sendSuccess(['email' => $email], 'OTP sent to your email.');
